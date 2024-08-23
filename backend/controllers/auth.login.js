@@ -23,9 +23,9 @@ exports.login = async (req, res) => {
       algorithm: "HS256",
       expiresIn: 86400, // 24 hours
     });
-
     return res.status(200).json({
       message: "User Successfully Logged in...",
+      user,
       accessToken: token,
     });
   } catch (err) {

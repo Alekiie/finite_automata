@@ -31,16 +31,10 @@ const UserSchema = new mongoose.Schema({
       ref: 'Automata',
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
 
-});
+},
+  { timestamps: true },
+);
 
 UserSchema.pre('save', function (next) {
   this.updatedAt = Date.now();
