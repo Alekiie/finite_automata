@@ -91,10 +91,6 @@ export const Login = () => {
                         >
                             <span>Log In</span>
                         </button>
-                        <span className='w-full text-white px-2 py-1'>
-                            <p>Already have an account?</p>
-                            <Link to="/" className='text-blue-500'>Sign Up</Link>
-                        </span>
                     </form>
                 </div>
             </div>

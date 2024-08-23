@@ -74,7 +74,8 @@ export const Signup = () => {
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 placeholder="John"
-                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
+                                required
                             />
                         </div>
 
@@ -87,7 +88,8 @@ export const Signup = () => {
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 placeholder="Snow"
-                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
+                                required
                             />
                         </div>
 
@@ -100,7 +102,8 @@ export const Signup = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="johnsnow@example.com"
-                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
+                                required
                             />
                         </div>
 
@@ -113,18 +116,19 @@ export const Signup = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="Enter your password"
-                                className="block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
+                                required
                             />
                         </div>
 
                         <div className="md:col-span-2">
-                            <label htmlFor="role" className="block mb-2 text-sm text-gray-600 dark:text-gray-200">Select Your Role</label>
+                            <label htmlFor="role" className="block mb-1 text-sm text-gray-600 dark:text-gray-200">Select Your Role</label>
                             <select
                                 id="role"
                                 name="role"
                                 value={formData.role}
                                 onChange={handleChange}
-                                className="block w-full px-5 py-3 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+                                className="block w-full px-2 py-1 mt-1 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700"
                             >
                                 <option value="student">Student</option>
                                 <option value="admin">Admin</option>
@@ -134,14 +138,10 @@ export const Signup = () => {
 
                         <button
                             type="submit"
-                            className="flex items-center justify-center w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                            className="flex items-center justify-center w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring"
                         >
                             <span>Sign Up</span>
                         </button>
-                        <span className='w-full text-white px-2 py-1'>
-                            <p>Already have an account?</p>
-                            <Link to="/login" className='text-blue-500'>Login</Link>
-                        </span>
                     </form>
                 </div>
             </div>
