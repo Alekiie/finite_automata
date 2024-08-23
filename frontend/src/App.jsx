@@ -1,12 +1,12 @@
-function App() {
+import MainApp from "./mainapp/MainApp.jsx";
+import { AuthProvider } from './context/AuthContext';
 
-  return (
-    <>
-        <div className="w-full h-screen flex items-center justify-center bg-lime-300">
-            <h2 className="text-red-400">Hello World</h2>
-        </div>
-    </>
-  )
+const  App = () => {
+    return (
+        <AuthProvider>
+            <MainApp />
+        </AuthProvider>
+    )
 }
 
-export default App
+export default App;

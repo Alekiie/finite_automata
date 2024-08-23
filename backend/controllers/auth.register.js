@@ -3,6 +3,7 @@ const Users = require("../models/UserModel");
 
 const registerController = async (req, res) => {
     const { firstName, lastName, email, role = 'student', password } = req.body;
+    console.log(req.body);
 
     // Validate input data (you can add more validations as needed)
     if (!firstName || !lastName || !email || !password) {
