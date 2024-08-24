@@ -6,8 +6,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = useState({
         isAuthenticated: false,
-        user: null,
-        accessToken: null,
+        user: {},
+        accessToken: '',
     });
 
     useEffect(() => {
@@ -26,13 +26,14 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await axios.post('http://localhost:3000/login', { email, password });
-            const { accessToken } = response.data;
+            const { accessToken, user } = response.data;
+            console.log(user)
 
             localStorage.setItem('accessToken', accessToken);
 
             setAuthState({
                 isAuthenticated: true,
-                user: null, // Optionally, you can fetch user info here
+                user: user, // Optionally, you can fetch user info here
                 accessToken,
             });
 
