@@ -97,11 +97,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         ))}
       </ul>
       <section className={`absolute flex items-center justify-around bottom-4 left-4 w-5/6 rounded bg-blue-500 ${isOpen ? '' : "hidden"}`}>
-        <button className="flex gap-2 items-center justify-center p-2 " onClick={logout}>
+        <button className="flex flex-col gap-2 items-center justify-center p-2 " onClick={logout}>
           <span>Logout</span>
           <IoLogOutOutline />
         </button>
-        <span className="flex gap-2 items-center justify-center p-2 ">
+        <span className="flex flex-col gap-2 items-center justify-center p-2 ">
           <RxAvatar />
           <p>{authState ? authState.user.firstName : ""}</p>
         </span>
