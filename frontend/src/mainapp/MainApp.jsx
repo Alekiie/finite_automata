@@ -8,16 +8,16 @@ import {Login} from "../pages/Login";
 import {Dashboard} from '../pages/Dashboard';
 
 // import components
-import Navbar from '../components/NavBar';
+import Layout from '../components/Layout';
 
 
 function MainApp() {
     const { authState } = useContext(AuthContext);
 
     return (
-        <div className="w-full min-h-full flex items-center justify-center bg-gradient-to-br from-teal-100 via-blue-200 to-teal-200">
+        <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-100 via-blue-200 to-teal-200">
             <Router>
-                <Navbar />
+                <Layout/>
                 <Routes>
                     <Route path="/" element={authState.isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />} />
                     <Route path="/login" element={authState.isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
