@@ -11,6 +11,7 @@ dotenv.config();
 
 /*MIDDLEWARES*/
 app.use(cors());
+app.use(express.json())
 
 /*ALL ROUTES*/
 app.use('/register', register);

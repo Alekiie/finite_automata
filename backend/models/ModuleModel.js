@@ -40,20 +40,14 @@ const ModuleSchema = new Schema({
       ref: 'Automata', // References to automata related to this course
     },
   ],
-  enrolledUserss: [
+  enrolledUsers: [ // Fixed the typo
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Users', // References to Userss who are enrolled in this course
+      ref: 'Users', // References to Users who are enrolled in this course
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+}, {
+  timestamps: true, // Automatically manages `createdAt` and `updatedAt`
 });
 
 const Module = mongoose.model('Module', ModuleSchema);
