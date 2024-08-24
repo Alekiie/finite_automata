@@ -26,14 +26,14 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await axios.post('http://localhost:3000/login', { email, password });
-            const { accessToken, user } = response.data;
-            console.log(user)
+            const { accessToken, userData } = response.data;
+            console.log(userData);
 
             localStorage.setItem('accessToken', accessToken);
 
             setAuthState({
                 isAuthenticated: true,
-                user: user, // Optionally, you can fetch user info here
+                user: userData, // Optionally, you can fetch user info here
                 accessToken,
             });
 
