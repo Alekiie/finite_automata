@@ -23,7 +23,6 @@ exports.login = async (req, res) => {
       expiresIn: 86400, // 24 hours
     });
     const userData = { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, automata: user.automata };
-    console.log(userData)
     return res.status(200).json({
       message: "User Successfully Logged in...",
       userData,
