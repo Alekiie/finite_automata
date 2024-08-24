@@ -1,63 +1,67 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [authState, setAuthState] = useState({
-        isAuthenticated: false,
-        user: {},
-        accessToken: '',
-    });
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    user: null,
+  });
 
-    useEffect(() => {
-        // Check for token in localStorage on initial load
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            setAuthState(prevState => ({
-                ...prevState,
-                isAuthenticated: true,
-                accessToken: token,
-            }));
-            // Optionally fetch user info here
-        }
-    }, []);
+  useEffect(() => {
+    // Check for user data in localStorage on initial load
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
 
-    const login = async (email, password) => {
-        try {
-            const response = await axios.post('http://localhost:3000/login', { email, password });
-            const { accessToken, userData } = response.data;
-            console.log(userData);
-
-            localStorage.setItem('accessToken', accessToken);
-
-            setAuthState({
-                isAuthenticated: true,
-                user: userData, // Optionally, you can fetch user info here
-                accessToken,
-            });
-
-            return { success: true, message: response.data.message };
-        } catch (error) {
-            console.error(error);
-            return { success: false, message: error.response?.data?.message || 'Login failed' };
-        }
-    };
-
-    const logout = () => {
-        localStorage.removeItem('accessToken');
+      if (parsedUser.accessToken) {
         setAuthState({
-            isAuthenticated: false,
-            user: null,
-            accessToken: null,
+          isAuthenticated: true,
+          user: parsedUser,
         });
-    };
+      }
+    }
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const login = async (email, password) => {
+    try {
+      const response = await axios.post("http://localhost:3000/login", {
+        email,
+        password,
+      });
+      const { userData } = response.data;
+
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setAuthState({
+        isAuthenticated: true,
+        user: userData,
+      });
+
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        message: error.response?.data?.message || "Login failed",
+      };
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    setAuthState({
+      isAuthenticated: false,
+      user: null,
+    });
+  };
+
+  return (
+    <AuthContext.Provider value={{ authState, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

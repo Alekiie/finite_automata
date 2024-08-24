@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <div
       className={`absolute left-0 top-0 h-full bg-gray-900 shadow-md transition-all duration-300 ${
-        isOpen ? "w-56" : "w-16"
+        isOpen ? "w-56" : "w-0"
       }`}
     >
       <div className="flex items-center justify-between py-4 px-4">
@@ -61,7 +61,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               <FaIcons.FaBook />
             </span>
           ) : (
-            <span onClick={toggleSidebar} className="text-3xl cursor-pointer">
+            <span onClick={toggleSidebar} className="text-3xl cursor-pointer text-black">
               <FaIcons.FaBars />
             </span>
           )}

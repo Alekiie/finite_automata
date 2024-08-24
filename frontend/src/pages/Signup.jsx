@@ -11,7 +11,7 @@ export const Signup = () => {
         lastName: '',
         email: '',
         password: '',
-        role: 'student'
+        role: 'Student'
     });
 
     const [error, setError] = useState('');
@@ -36,7 +36,6 @@ export const Signup = () => {
             setTimeout(()=>{
                 navigate('/login');
             },1000)
-            console.log(response.data);
         } catch (err) {
             setError('Registration failed. Please try again.');
             console.error(err);
@@ -160,9 +159,9 @@ export const Signup = () => {
                 onChange={handleChange}
                 className="block w-full px-2 py-1 mt-1 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400"
               >
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-                <option value="instructor">Instructor</option>
+                <option value="Student">Student</option>
+                <option value="Admin">Admin</option>
+                <option value="Instructor">Instructor</option>
               </select>
             </div>
 
