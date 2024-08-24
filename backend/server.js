@@ -4,6 +4,7 @@ const app = express();
 const register = require("./routes/register");
 const login = require("./routes/login");
 const users = require("./routes/users");
+const modules=require('./routes/modules')
 const {connectDb} = require('./configs/db');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 app.use('/register', register);
 app.use('/login', login);
 app.use('/users', users);
+app.use('/modules',modules)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
