@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createModule} = require('../controllers/postModules');
+const { createModule } = require('../controllers/postModules');
 const authenticate = require('../middlewares/isAuthenticated');
 const controller = require('../controllers/availablemodules')
 
