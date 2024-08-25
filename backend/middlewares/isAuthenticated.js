@@ -21,8 +21,7 @@ const authenticate = async (req, res, next) => {
             return res.status(404).json({ message: "User not found" });
         }
         // Ensure the returned user has a role of instructor
-
-        if (user.role !== 'instructor') {
+        if (user.role.toLocaleLowerCase()!== 'instructor') {
             return res.status(403).json({ message: "Forbidden: Only instructors can perform this action" });
         }
 
