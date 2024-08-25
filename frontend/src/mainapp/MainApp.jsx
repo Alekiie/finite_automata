@@ -34,11 +34,11 @@ function MainApp() {
                 <Routes>
                     <Route path="/" element={authState.isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />} />
                     <Route path="/login" element={authState.isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-                    {/* Define other routes here */}
-                    <Route path="/dashboard" element={authState.isAuthenticated ? <Dashboard sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
-                    <Route path="/profile" element={authState.isAuthenticated ? <Profile sidebarOpen={sidebarOpen}/> : <Navigate to="/login" />} />
-                    <Route path="/modules" element={authState.isAuthenticated ? <Modules sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
-                    <Route path="/instructors" element={authState.isAuthenticated ? <Instructors sidebarOpen={sidebarOpen} /> : <Navigate to="/login" />} />
+                    {/* Define other pages' routes here */}
+                    <Route path="/dashboard" element={authState.isAuthenticated ? <Dashboard/> : <Navigate to="/login" />} />
+                    <Route path="/profile" element={authState.isAuthenticated ? <Profile/> : <Navigate to="/login" />} />
+                    <Route path="/modules" element={authState.isAuthenticated ? <Modules /> : <Navigate to="/login" />} />
+                    <Route path="/instructors" element={authState.isAuthenticated ? <Instructors /> : <Navigate to="/login" />} />
                 </Routes>
             </Router>
         </div>
