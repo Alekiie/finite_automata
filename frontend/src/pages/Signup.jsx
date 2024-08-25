@@ -11,7 +11,7 @@ export const Signup = () => {
         lastName: '',
         email: '',
         password: '',
-        role: 'student'
+        role: 'Student'
     });
 
     const [error, setError] = useState('');
@@ -36,7 +36,6 @@ export const Signup = () => {
             setTimeout(()=>{
                 navigate('/login');
             },1000)
-            console.log(response.data);
         } catch (err) {
             setError('Registration failed. Please try again.');
             console.error(err);
@@ -44,21 +43,21 @@ export const Signup = () => {
     };
 
     return (
-      <div className="w-3/4 flex flex-col lg:flex-row p-4 lg:py-4 mx-auto lg:mt-8 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
-        <div className="hidden lg:block lg:w-1/3 bg-cover rounded-lg">
-          <img
-            src="https://images.unsplash.com/photo-1494621930069-4fd4b2e24a11?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=715&q=80"
-            alt="Image"
-            className="hidden lg:block lg:w-full m-3 bg-cover rounded-lg"
-          />
-        </div>
+      <div className="w-3/4 flex flex-col lg:flex-row p-8 mx-auto lg:mt-8 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+        <div
+          className="hidden lg:block lg:w-3/5 bg-cover rounded-lg"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1494621930069-4fd4b2e24a11?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=715&q=80')",
+          }}
+        ></div>
 
-        <div className="flex flex-col w-full lg:w-3/5 p-6 lg:ml-4">
-          <h1 className="text-2xl font-semibold tracking-wider text-gray-800 capitalize dark:text-white">
-            Learn Finite Automata & Regular Languages
+        <div className="flex flex-col w-full p-6 lg:ml-4">
+          <h1 className="text-2xl font-semibold text-center tracking-wider text-gray-800 capitalize dark:text-white">
+            Finite Automata & Regular Languages
           </h1>
 
-          <p className="mt-4 text-gray-500 dark:text-gray-400">
+          <p className="mt-2 text-gray-500 text-center dark:text-gray-400">
             Sign up to access resources and tools for mastering Finite Automata
             and Regular Languages. Select your role and get started!
           </p>
@@ -67,7 +66,7 @@ export const Signup = () => {
           {success && <p className="mt-4 text-green-500">{success}</p>}
 
           <form
-            className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2"
+            className="grid grid-cols-1 gap-6 mt-4 md:grid-cols-2"
             onSubmit={handleSubmit}
           >
             <div>
@@ -146,7 +145,7 @@ export const Signup = () => {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-1">
               <label
                 htmlFor="role"
                 className="block mb-1 text-sm text-gray-600 dark:text-gray-200"
@@ -160,15 +159,30 @@ export const Signup = () => {
                 onChange={handleChange}
                 className="block w-full px-2 py-1 mt-1 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400"
               >
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-                <option value="instructor">Instructor</option>
+                <option value="Student">Student</option>
+                <option value="Admin">Admin</option>
+                <option value="Instructor">Instructor</option>
               </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="profilePic"
+                className="block mb-1 text-sm text-gray-600 dark:text-gray-200"
+              >
+                Profile Picture
+              </label>
+              <input
+                id="profilePic"
+                type="file"
+                placeholder="Enter your password"
+                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400"
+              />
             </div>
 
             <button
               type="submit"
-              className="flex items-center justify-center w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400"
+              className="col-span-2 px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400"
             >
               <span>Sign Up</span>
             </button>
