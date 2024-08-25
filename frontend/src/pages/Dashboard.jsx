@@ -1,15 +1,187 @@
-import React, { useState } from "react";
-import Header from "../components/Header";
-import DashboardContent from "../components/DashboardContent";
+import React, { useMemo } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement } from 'chart.js';
+
+// Register components for chart.js
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement);
+
+// Memoized Bar Chart
+const MemoizedBarChart = React.memo(({ data }) => (
+  <Bar data={data} options={{ maintainAspectRatio: true }} />
+));
+
+// Memoized Line Chart
+const MemoizedLineChart = React.memo(({ data }) => (
+  <Line data={data} options={{ maintainAspectRatio: true }} />
+));
 
 export const Dashboard = () => {
-  
+  // Data for the Bar chart (Performance)
+  const performanceData = useMemo(() => ({
+    labels: ['Quiz 1', 'Quiz 2', 'Quiz 3'],
+    datasets: [
+      {
+        label: 'Scores',
+        data: [85, 92, 78],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+      },
+    ],
+  }), []);
+
+  // Data for the Line chart (Module Progress)
+  const progressData = useMemo(() => ({
+    labels: ['Module 1', 'Module 2', 'Module 3', 'Module 4'],
+    datasets: [
+      {
+        label: 'Completion (%)',
+        data: [25, 50, 75, 100],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+      },
+    ],
+  }), []);
 
   return (
-    <div className="flex">
-      <div>
-        <Header />
-        <DashboardContent />
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <header className="bg-blue-700 text-white p-6 shadow-md">
+        <h1 className="text-3xl text-center font-semibold">
+          Finite Automata Learning Dashboard
+        </h1>
+      </header>
+      <div className="flex flex-1">
+        <aside className="w-56 bg-white shadow-lg rounded p-6">
+          <nav>
+            <ul>
+              <li className="mb-4">
+                <a
+                  href="#stats"
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Stats
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#performance"
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Performance
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#instructors"
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Instructors
+                </a>
+              </li>
+              <li className="mb-4">
+                <a
+                  href="#modules"
+                  className="text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Modules
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+        <main className="flex-1 p-10">
+          {/* Stats Section */}
+          <section id="stats" className="mb-10">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+              Your Stats
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Total Modules Completed
+                </h3>
+                <p className="text-3xl font-bold text-gray-800">12</p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Active Modules
+                </h3>
+                <p className="text-3xl font-bold text-gray-800">3</p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Total Time Spent
+                </h3>
+                <p className="text-3xl font-bold text-gray-800">15 hrs</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Performance Section */}
+          <section id="performance" className="mb-10">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+              Performance
+            </h2>
+            <div className="bg-white p-6 shadow-md rounded-lg">
+              <MemoizedBarChart data={performanceData} />
+            </div>
+          </section>
+
+          {/* Instructors Section */}
+          <section id="instructors" className="mb-10">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+              Instructors
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Dr. John Doe
+                </h3>
+                <p className="text-gray-700">
+                  Expert in Finite Automata and Regular Languages.
+                </p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Prof. Jane Smith
+                </h3>
+                <p className="text-gray-700">
+                  Specializes in Theoretical Computer Science.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Modules Section */}
+          <section id="modules" className="mb-10">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
+              Enrolled Modules
+            </h2>
+            <div className="bg-white p-6 shadow-md rounded-lg mb-6">
+              <h3 className="text-lg font-medium text-gray-600 mb-4">
+                Progress
+              </h3>
+              <MemoizedLineChart data={progressData} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Module 1: Introduction to Finite Automata
+                </h3>
+                <p className="text-gray-700">
+                  Understanding the basics of finite automata.
+                </p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-gray-600">
+                  Module 2: Regular Languages
+                </h3>
+                <p className="text-gray-700">
+                  Deep dive into regular languages and their properties.
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );
