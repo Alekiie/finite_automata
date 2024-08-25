@@ -32,7 +32,6 @@ const ModuleSchema = new Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users', // Reference to the Users model (instructor)
-    required: true,
   },
   automataReferences: [
     {
