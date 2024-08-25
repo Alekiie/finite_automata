@@ -12,31 +12,34 @@ const ModuleSchema = new Schema({
     required: true,
     trim: true,
   },
-  content: [
+  content: 
     {
-      type: {
-        type: String,
-        enum: ['text', 'video', 'quiz', 'exercise'], // The type of content (e.g., a text lesson, video, quiz, or exercise)
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
-      data: {
-        type: Schema.Types.Mixed, // This could store text, video links, quiz questions, etc.
-        required: true,
-      },
+      // type: {
+      //   type: String,
+      //   enum: ['text', 'video', 'quiz', 'exercise'], // The type of content (e.g., a text lesson, video, quiz, or exercise)
+      //   required: true,
+      // },
+      // title: {
+      //   type: String,
+      //   required: true,
+      // },
+      // data: {
+      //   type: Schema.Types.Mixed, // This could store text, video links, quiz questions, etc.
+      //   required: true,
+      // },
+      type: String,
+      required: true,
+      trim : true,
     },
-  ],
+  
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users', // Reference to the Users model (instructor)
+    ref: 'Users', 
   },
   automataReferences: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Automata', // References to automata related to this course
+      ref: 'Automata', 
     },
   ],
   enrolledUsers: [ // Fixed the typo

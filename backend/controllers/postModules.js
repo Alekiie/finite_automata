@@ -2,8 +2,9 @@ const ModuleModel = require('../models/ModuleModel');
 
 const createModule = async (req, res) => {
     try {
-         // Check if the user is logged in
-         if (!req.user) {
+
+        // Check if the user is logged in
+        if (!req.user) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
@@ -19,11 +20,11 @@ const createModule = async (req, res) => {
             title,
             description,
             content,
-            author,
+            author:req.user._id,
             automataReferences,
             enrolledUsers,
         });
-
+       
         // Save the module to the database
         await module.save();
 

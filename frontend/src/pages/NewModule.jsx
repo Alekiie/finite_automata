@@ -5,7 +5,6 @@ import AuthContext from "../context/AuthContext";
 export function NewModule() {
 
     const {authState} = useContext(AuthContext);
-    console.log(authState.user.accessToken);
 
   const [formData, setFormData] = useState({
     title: "",
