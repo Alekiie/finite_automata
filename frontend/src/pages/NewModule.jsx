@@ -11,9 +11,6 @@ export function NewModule() {
     title: "",
     description: "",
     content: "",
-    author: "",
-    automataReferences: "",
-    enrolledUsers: "",
   });
 
   const handleChange = (e) => {
@@ -41,9 +38,6 @@ export function NewModule() {
           title: "",
           description: "",
           content: "",
-          author: "",
-          automataReferences: "",
-          enrolledUsers: "",
         });
       } else {
         console.error("Error creating module:", response.data.message);
@@ -93,45 +87,6 @@ export function NewModule() {
           <textarea
             name="content"
             value={formData.content}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Author
-          </label>
-          <input
-            type="text"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Automata References
-          </label>
-          <input
-            type="text"
-            name="automataReferences"
-            value={formData.automataReferences}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Enrolled Users
-          </label>
-          <input
-            type="number"
-            name="enrolledUsers"
-            value={formData.enrolledUsers}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             required
