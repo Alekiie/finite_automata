@@ -92,7 +92,7 @@ export function Modules() {
                           {module.description}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm border">{module.date}</td>
+                      <td className="px-4 py-3 text-sm border">{new Date(module.createdAt).toLocaleDateString()}</td>
                     </tr>
                   ))
                 ) : (
