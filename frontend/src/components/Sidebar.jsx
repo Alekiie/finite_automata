@@ -50,7 +50,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
   return (
     <div
-      className={`absolute left-0 top-0 h-full bg-gray-900 shadow-md transition-all duration-300 ${
+      className={`fixed z-10 left-0 top-0 h-full bg-gray-900 shadow-md transition-all duration-300 ${
         isOpen ? "w-56" : "w-0"
       }`}
     >

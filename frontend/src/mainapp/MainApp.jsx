@@ -8,6 +8,7 @@ import {Login} from "../pages/Login";
 import {Dashboard} from '../pages/Dashboard';
 import { Profile } from '../pages/Profile';
 import {Modules} from '../pages/Modules';
+import {NewModule} from '../pages/NewModule';
 import {Instructors} from '../pages/Instructors';
 
 
@@ -38,6 +39,7 @@ function MainApp() {
                     <Route path="/dashboard" element={authState.isAuthenticated ? <Dashboard/> : <Navigate to="/login" />} />
                     <Route path="/profile" element={authState.isAuthenticated ? <Profile/> : <Navigate to="/login" />} />
                     <Route path="/modules" element={authState.isAuthenticated ? <Modules /> : <Navigate to="/login" />} />
+                    <Route path="/new_module" element={authState.isAuthenticated ? <NewModule /> : <Navigate to="/login" />} />
                     <Route path="/instructors" element={authState.isAuthenticated ? <Instructors /> : <Navigate to="/login" />} />
                 </Routes>
             </Router>

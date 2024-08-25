@@ -29,7 +29,7 @@ export const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/register', formData);
+            const response = await axios.post('http://localhost:3000/register', formData).data;
             setSuccess('Registration successful!');
             setError('');
 
@@ -37,7 +37,7 @@ export const Signup = () => {
                 navigate('/login');
             },1000)
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            setError(`${response.statusMessage, response.user.email}`);
             console.error(err);
         }
     };
