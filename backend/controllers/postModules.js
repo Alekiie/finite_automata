@@ -8,7 +8,7 @@ const createModule = async (req, res) => {
         }
 
         // Check if the role of the user is instructor
-        if (req.user.role !== 'instructor') {
+        if (req.user.role.toLocaleLowerCase() !== 'instructor') {
             return res.status(403).json({ message: 'Only instructors can create modules' });
         }
         // Extract module data from the request body
