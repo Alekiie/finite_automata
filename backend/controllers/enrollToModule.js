@@ -1,23 +1,13 @@
 const Enrollment = require('../models/EnrolledModules');
 const Users = require('../models/UserModel');
 const jwt = require("jsonwebtoken");
+const authenticateUser = require('../utils/auth.util');
 
 
 const enrollToModule = async (req, res) => {
   try {
-    const authHeader = req.headers.authorization;
-    // Check if the Authorization header is present
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Unauthorized: No token provided" });
-    }
+    const { user, status, json } = await authenticateUser(req, res);
 
-    const token = authHeader.split(" ")[1];
-
-    // Decode and verify the token
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-
-    // Find the user associated with the decoded token
-    const user = await Users.findById(decoded.id);
     const { moduleId } = req.body;
 
     const existingEnrollment = await Enrollment.findOne({ userId: user._id, moduleId });

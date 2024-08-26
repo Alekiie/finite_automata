@@ -1,6 +1,20 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const sessionSchema = new Schema({
+  startTime: {
+    type: Date,
+    required: true,
+  },
+  endTime: {
+    type: Date,
+    required: true,
+  },
+  duration: {
+    type: Number, // Duration in minutes or hours
+  },
+});
+
 const enrollmentSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,6 +46,7 @@ const enrollmentSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  studySessions: [sessionSchema], // Add an array to store study sessions
 });
 
 const Enrollment = mongoose.model('Enrollment', enrollmentSchema);

@@ -20,7 +20,6 @@ const getAvailableModules = async (req, res) => {
             // Fetch modules created by the instructor
             availableModules = await modules.find({ author: req.query.userId }).populate("author","firstName lastName role");
         }
-console.log(availableModules);
         // If no modules found, return a message
         if (!availableModules || availableModules.length === 0) {
             return res.status(200).json({ message: "No available Modules" });
