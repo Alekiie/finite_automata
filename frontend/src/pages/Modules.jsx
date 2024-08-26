@@ -14,6 +14,7 @@ export function Modules() {
 
   useEffect(() => {
     const fetchModules = async () => {
+      // console.log(authState.user.id)
       setLoading(true);
       try {
         const response = await axios.get("http://localhost:3000/modules", {
@@ -21,7 +22,7 @@ export function Modules() {
             Authorization: `Bearer ${authState.user.accessToken}`,
           },
           params: {
-            userId: authState.user._id,
+            userId: authState.user.id,
           }
         });
         
