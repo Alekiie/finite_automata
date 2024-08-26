@@ -21,7 +21,6 @@ const authenticateUser = async (req, res) => {
         if (!user) {
             return { status: 404, json: { message: "User not found" } };
         }
-
         // Return the authenticated user
         return { user };
     } catch (error) {
