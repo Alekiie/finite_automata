@@ -1,12 +1,11 @@
 const ModuleModel = require('../models/ModuleModel');
+const authenticateUser = require('../utils/auth.util');
 
 const createModule = async (req, res) => {
     try {
 
-        // Check if the user is logged in
-        if (!req.user) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
+        const { user, status, json } = await authenticateUser(req, res);
+
 
         // Check if the role of the user is instructor
         if (req.user.role.toLocaleLowerCase() !== 'instructor') {

@@ -7,6 +7,7 @@ const users = require("./routes/users");
 const modules=require('./routes/modules')
 const enrollToModule = require("./routes/enrollTomodule");
 const instructors = require('./routes/instructors')
+const stats = require('./routes/stats')
 const {connectDb} = require('./configs/db');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -22,6 +23,7 @@ app.use('/users', users);
 app.use('/modules',modules)
 app.use("/enroll", enrollToModule);
 app.use('/instructors',instructors)
+app.use('/stats',stats)
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
