@@ -12,7 +12,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Check for user data in localStorage on initial load
     const storedUser = localStorage.getItem("user");
-    console.log(storedUser);
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
 
