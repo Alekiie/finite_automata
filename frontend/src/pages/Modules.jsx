@@ -51,9 +51,10 @@ export function Modules() {
   const handleEnroll = async () => {
     // Logic for enrolling in the module (e.g., API call)
     try {
-      await axios.post("http://localhost:3000/enroll", {
-        moduleId: selectedModule.id,
-        userId: authState.user.id,
+      await axios.post("http://localhost:3000/enroll", selectedModule.id, {
+        headers: {
+          Authorization: `Bearer ${authState.user.accessToken}`,
+        },
       }).data;
       console.log("Enrolling in module:", selectedModule.title);
       // Close the modal after enrolling
