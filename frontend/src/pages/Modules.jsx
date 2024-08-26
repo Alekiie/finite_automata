@@ -98,7 +98,7 @@ export function Modules() {
             <tbody className="bg-white">
 
               {
-                modules.length > 0 ? (
+                modules ? (
                   modules.map((module, index) => (
                     <tr key={index} className="text-gray-700">
                       <td className="px-4 py-3 border">
