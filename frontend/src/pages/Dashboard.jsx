@@ -18,7 +18,7 @@ const MemoizedLineChart = React.memo(({ data }) => (
 export const Dashboard = () => {
   // Data for the Bar chart (Performance)
   const performanceData = useMemo(() => ({
-    labels: ['Quiz 1', 'Quiz 2', 'Quiz 3'],
+    labels: ['Module 1', 'Module 2', 'Module 3'],
     datasets: [
       {
         label: 'Scores',

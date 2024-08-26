@@ -29,7 +29,7 @@ export function Profile() {
             </div>
             <div className="flex flex-col justify-center items-center">
               <h1 className="text-gray-500 text-xs">Joined On</h1>
-              <h1 className="text-gray-600 text-sm">{new Date(authState.user.createdAt).toLocaleString('en-GB',{year:'numeric',month:'2-digit',year:'2-digit'})}</h1>
+              <h1 className="text-gray-600 text-sm">{new Date(authState.user.createdAt).toLocaleDateString()}</h1>
             </div>
           </div>
           <div className="w-full h-fit flex flex-col justify-center items-center">
