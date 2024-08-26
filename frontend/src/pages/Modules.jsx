@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import AuthContext from "../context/AuthContext";
+import ModuleModal from "../components/ModuleModal";
 
 export function Modules() {
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [modules, setModules] = useState([]);  // Initialize as an array
+  const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedModule, setSelectedModule] = useState(null); // State to manage selected module
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
   useEffect(() => {
     const fetchModules = async () => {
@@ -22,10 +25,9 @@ export function Modules() {
           },
           params: {
             userId: authState.user.id,
-          }
+          },
         });
         setModules(response.data.availableModules);
-        
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -34,7 +36,33 @@ export function Modules() {
     };
 
     fetchModules();
-  }, []);
+  }, [authState.user.accessToken, authState.user.id]);
+
+  const handleViewModule = (module) => {
+    setSelectedModule(module);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedModule(null);
+  };
+
+  const handleEnroll = async () => {
+    // Logic for enrolling in the module (e.g., API call)
+    try {
+      await axios.post("http://localhost:3000/enroll", selectedModule.id, {
+        headers: {
+          Authorization: `Bearer ${authState.user.accessToken}`,
+        },
+      }).data;
+      console.log("Enrolling in module:", selectedModule.title);
+      // Close the modal after enrolling
+      handleCloseModal();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -45,14 +73,12 @@ export function Modules() {
         <div className="p-6 w-full flex items-center justify-around bg-green-300">
           <p>These are all the available modules</p>
           <button
-            onClick={() => {
-              navigate("/new_module");
-            }}
+            onClick={() => navigate("/new_module")}
             className={`${
               authState.user.role.toLowerCase() === "student"
                 ? "hidden"
                 : "flex gap-2 items-center px-2 py-1 bg-blue-700 rounded shadow text-white"
-            } `}
+            }`}
           >
             <span>Create New</span>
             <FaPlus />
@@ -66,9 +92,11 @@ export function Modules() {
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Description</th>
                 <th className="px-4 py-3">Date</th>
+                <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white">
+
               {
                 modules.length > 0 ? (
                   modules.map((module, index) => (
@@ -84,26 +112,50 @@ export function Modules() {
                             <p className="text-xs text-gray-600">{module.author.role}</p>
                           </div>
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-ms font-semibold border">{module.title}</td>
-                      <td className="px-4 py-3 text-xs border">
-                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">
-                          {module.description}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm border">{new Date(module.createdAt).toLocaleDateString()}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="4" className="text-center py-4">No modules available</td>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-ms font-semibold border">
+                      {module.title}
+                    </td>
+                    <td className="px-4 py-3 text-ms border">
+                      <span className="px-2 py-1 font-semibold leading-tight rounded-sm">
+                        {module.description}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm border">
+                      {new Date(module.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm border">
+                      <button
+                        onClick={() => handleViewModule(module)}
+                        className="w-3/4 px-2 py-1 text-black bg-blue-400 text-center rounded"
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
-                )
-              }
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4">
+                    No modules available
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* Render the ModuleModal */}
+      {selectedModule && (
+        <ModuleModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          module={selectedModule}
+          onEnroll={handleEnroll}
+        />
+      )}
     </section>
   );
 }
