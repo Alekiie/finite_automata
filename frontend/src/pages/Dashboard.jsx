@@ -144,9 +144,17 @@ export const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white p-6 shadow-md rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
+                  Total Modules Enrolled
+                </h3>
+                <p className="text-3xl font-bold text-red-800 text-center">
+                  {stats.totalEnrolledModules}
+                </p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-center text-gray-600">
                   Total Modules Completed
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">
+                <p className="text-3xl font-bold text-center text-red-800">
                   {stats.completedModules}
                 </p>
               </div>
@@ -154,13 +162,13 @@ export const Dashboard = () => {
                 <h3 className="text-lg font-medium text-gray-600">
                   Active Modules
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">{stats.activeModules}</p>
+                <p className="text-3xl text-center font-bold text-red-800">{stats.activeModules}</p>
               </div>
               <div className="bg-white p-6 shadow-md rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
                   Total Time Spent
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">{stats.totalTimeSpent} hrs</p>
+                <p className="text-3xl text-center font-bold text-red-800">{stats.totalTimeSpent} hrs</p>
               </div>
             </div>
           </section>
