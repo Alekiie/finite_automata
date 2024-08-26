@@ -4,12 +4,12 @@ const { Schema } = mongoose;
 const enrollmentSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users', // Reference to the User model
+    ref: 'Users', 
     required: true,
   },
-  courseId: {
+  moduleId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Module', // Reference to the Course model
+    ref: 'Module', 
     required: true,
   },
   status: {
