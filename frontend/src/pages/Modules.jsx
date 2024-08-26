@@ -71,7 +71,7 @@ export function Modules() {
     <section className="container mx-auto p-6">
       <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
         <div className="p-6 w-full flex items-center justify-around bg-green-300">
-          <p>These are all your modules</p>
+          <p>These are all the available modules</p>
           <button
             onClick={() => navigate("/new_module")}
             className={`${
@@ -96,28 +96,21 @@ export function Modules() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {modules.length > 0 ? (
-                modules.map((module, index) => (
-                  <tr key={index} className="text-gray-700">
-                    <td className="px-4 py-3 border">
-                      <div className="flex items-center text-sm">
-                        <div className="relative w-8 h-8 mr-3 rounded-full md:block">
-                          <img
-                            className="object-cover w-full h-full rounded-full"
-                            src="https://images.pexels.com/photos/5212324/pexels-photo-5212324.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                            alt="Module"
-                            loading="lazy"
-                          />
-                          <div
-                            className="absolute inset-0 rounded-full shadow-inner"
-                            aria-hidden="true"
-                          ></div>
-                        </div>
-                        <div>
-                          <p className="font-semibold text-black">
-                            {module.author}
-                          </p>
-                          <p className="text-xs text-gray-600">Developer</p>
+
+              {
+                modules.length > 0 ? (
+                  modules.map((module, index) => (
+                    <tr key={index} className="text-gray-700">
+                      <td className="px-4 py-3 border">
+                        <div className="flex items-center text-sm">
+                          <div className="relative w-8 h-8 mr-3 rounded-full md:block">
+                            <img className="object-cover w-full h-full rounded-full" src="https://images.pexels.com/photos/5212324/pexels-photo-5212324.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" alt="Module" loading="lazy"/>
+                            <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-black">{module.author.firstName} {module.author.lastName}</p>
+                            <p className="text-xs text-gray-600">{module.author.role}</p>
+                          </div>
                         </div>
                       </div>
                     </td>
