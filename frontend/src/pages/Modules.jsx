@@ -14,7 +14,6 @@ export function Modules() {
 
   useEffect(() => {
     const fetchModules = async () => {
-      // console.log(authState.user.id)
       setLoading(true);
       try {
         const response = await axios.get("http://localhost:3000/modules", {
@@ -45,7 +44,7 @@ export function Modules() {
     <section className="container mx-auto p-6">
       <div className="w-full mb-8 overflow-hidden rounded-lg shadow-lg">
         <div className="p-6 w-full flex items-center justify-around bg-green-300">
-          <p>These are all your modules</p>
+          <p>These are all the available modules</p>
           <button
             onClick={() => {
               navigate("/new_module");
