@@ -24,7 +24,6 @@ export function Modules() {
             userId: authState.user.id,
           }
         });
-        
         setModules(response.data.availableModules);
         
         setLoading(false);
@@ -81,8 +80,8 @@ export function Modules() {
                             <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                           </div>
                           <div>
-                            <p className="font-semibold text-black">{module.author}</p>
-                            <p className="text-xs text-gray-600">Developer</p>
+                            <p className="font-semibold text-black">{module.author.firstName} {module.author.lastName}</p>
+                            <p className="text-xs text-gray-600">{module.author.role}</p>
                           </div>
                         </div>
                       </td>
