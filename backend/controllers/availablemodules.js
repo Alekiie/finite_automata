@@ -4,7 +4,8 @@ const modules = require('../models/ModuleModel')
 // Controller function to fetch and return all available modules
 const getAvailableModules = async (req, res) => {
     try {
-        const availableModules = await modules.find();
+      
+        const availableModules = await modules.find({author:req.query.userId});
         if (!availableModules) {
             res.status(200).json({ message: "No available Modules" })
         }
