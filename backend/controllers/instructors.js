@@ -2,7 +2,7 @@ const users=require('../models/UserModel')
 
 const getInstructors = async (req, res) => {
     try {
-        const instructors = await users.find({ role: 'instructor' });
+        const instructors = await users.find({ role: 'Instructor' });
 
         if (!instructors || instructors.length === 0) {
             return res.status(200).json({ message: "No instructors found" });
