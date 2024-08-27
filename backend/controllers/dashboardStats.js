@@ -28,7 +28,6 @@ const getDashboardStats = async (req, res) => {
         // const totalInstructors = await Users.find({ role: 'instructor' }).countDocuments();
         stats = { totalEnrolledStudents, totalStudents, totalInstructors }
     }
-    
     return res.status(200).json(stats);
 }
 module.exports = { getDashboardStats };
