@@ -42,7 +42,6 @@ const getDashboardStats = async (req, res) => {
         stats = { totalEnrolledStudents, totalModules };
     }
     
-    console.log("Stats response:", stats);
     return res.status(200).json(stats);
 };
 module.exports = { getDashboardStats };
