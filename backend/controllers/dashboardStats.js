@@ -15,6 +15,7 @@ const getDashboardStats = async (req, res) => {
         // Calculate the total time spent by the user across all modules
         const enrollments = await modules.find({ userId: user._id });
 
+
         let totalTimeSpent = 0;
         enrollments.forEach(enrollment => {
             // Sum up the durations from all study sessions
@@ -28,6 +29,7 @@ const getDashboardStats = async (req, res) => {
         // const totalInstructors = await Users.find({ role: 'instructor' }).countDocuments();
         stats = { totalEnrolledStudents, totalStudents, totalInstructors }
     }
+
     return res.status(200).json(stats);
 }
 module.exports = { getDashboardStats };

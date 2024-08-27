@@ -1,9 +1,30 @@
-import React, { useMemo } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement } from 'chart.js';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement,
+} from "chart.js";
+import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 // Register components for chart.js
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, PointElement, LineElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement
+);
 
 // Memoized Bar Chart
 const MemoizedBarChart = React.memo(({ data }) => (
@@ -16,32 +37,58 @@ const MemoizedLineChart = React.memo(({ data }) => (
 ));
 
 export const Dashboard = () => {
+  const { authState } = useContext(AuthContext);
+  const [stats, setsStats] = useState("");
+
   // Data for the Bar chart (Performance)
-  const performanceData = useMemo(() => ({
-    labels: ['Module 1', 'Module 2', 'Module 3'],
-    datasets: [
-      {
-        label: 'Scores',
-        data: [85, 92, 78],
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-      },
-    ],
-  }), []);
+  const performanceData = useMemo(
+    () => ({
+      labels: ["Module 1", "Module 2", "Module 3"],
+      datasets: [
+        {
+          label: "Scores",
+          data: [85, 92, 78],
+          backgroundColor: "rgba(54, 162, 235, 0.5)",
+        },
+      ],
+    }),
+    []
+  );
 
   // Data for the Line chart (Module Progress)
-  const progressData = useMemo(() => ({
-    labels: ['Module 1', 'Module 2', 'Module 3', 'Module 4'],
-    datasets: [
-      {
-        label: 'Completion (%)',
-        data: [25, 50, 75, 100],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-      },
-    ],
-  }), []);
+  const progressData = useMemo(
+    () => ({
+      labels: ["Module 1", "Module 2", "Module 3", "Module 4"],
+      datasets: [
+        {
+          label: "Completion (%)",
+          data: [25, 50, 75, 100],
+          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          fill: true,
+        },
+      ],
+    }),
+    []
+  );
+  // fetch the total modules completed, active modules, and total time spent from the backend 3000/stats endpoint using the useEffect hook.
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/stats", {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
+        });
+        setsStats(response.data);
+        console.log("Stats response:", response.data);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
 
+    fetchStats();
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-blue-700 text-white p-6 shadow-md">
@@ -97,21 +144,31 @@ export const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-white p-6 shadow-md rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
+                  Total Modules Enrolled
+                </h3>
+                <p className="text-3xl font-bold text-red-800 text-center">
+                  {stats.totalEnrolledModules}
+                </p>
+              </div>
+              <div className="bg-white p-6 shadow-md rounded-lg">
+                <h3 className="text-lg font-medium text-center text-gray-600">
                   Total Modules Completed
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">12</p>
+                <p className="text-3xl font-bold text-center text-red-800">
+                  {stats.completedModules}
+                </p>
               </div>
               <div className="bg-white p-6 shadow-md rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
                   Active Modules
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">3</p>
+                <p className="text-3xl text-center font-bold text-red-800">{stats.activeModules}</p>
               </div>
               <div className="bg-white p-6 shadow-md rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
                   Total Time Spent
                 </h3>
-                <p className="text-3xl font-bold text-gray-800">15 hrs</p>
+                <p className="text-3xl text-center font-bold text-red-800">{stats.totalTimeSpent} hrs</p>
               </div>
             </div>
           </section>
