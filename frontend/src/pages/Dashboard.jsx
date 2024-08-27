@@ -81,7 +81,6 @@ export const Dashboard = () => {
           },
         });
         setsStats(response.data);
-        console.log("Stats response:", response.data);
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
