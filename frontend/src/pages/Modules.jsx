@@ -56,7 +56,6 @@ export function Modules() {
           Authorization: `Bearer ${authState.user.accessToken}`,
         },
       }).data;
-      console.log("Enrolling in module:", selectedModule.title);
       // Close the modal after enrolling
       handleCloseModal();
     } catch (error) {
