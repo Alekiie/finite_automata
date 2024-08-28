@@ -12,9 +12,9 @@ const getDashboardStats = async (req, res) => {
     let stats;
     
     if (user.role.toLowerCase() === 'student') {
-        const totalEnrolledModules = await modules.find().countDocuments();
-        const completedModules = await modules.find({ status: 'completed' }).countDocuments();
-        const activeModules = await modules.find({ status: 'active' }).countDocuments();
+        const totalEnrolledModules = await modules.find({ userId: user._id }).countDocuments();
+        const completedModules = await modules.find({ status: 'completed', userId: user._id}).countDocuments();
+        const activeModules = await modules.find({ status: 'active',userId: user._id }).countDocuments();
 
         // Calculate the total time spent by the user across all modules
         const enrollments = await modules.find({ userId: user._id });
