@@ -6,9 +6,9 @@ const getAvailableModules = async (req, res) => {
     try {
         // Fetch the user and check if the user exists
         const user = await users.findById(req.query.userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+        // if (!user) {
+        //     return res.status(404).json({ message: "User not found" });
+        // }
 
         const userRole = user.role.toLowerCase();
         let availableModules;
