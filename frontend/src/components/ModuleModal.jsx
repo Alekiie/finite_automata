@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { GrCheckmark } from "react-icons/gr";
-import AuthContext from "../context/AuthContext"; // Import the AuthContext
+import AuthContext from "../context/AuthContext";
 
 const ModuleModal = ({ isOpen, onClose, module, onEnroll }) => {
-  // console.log(module)
-  const { authState } = useContext(AuthContext); // Access authState to check the user role
+  const { authState } = useContext(AuthContext);
 
   if (!isOpen) return null;
 
@@ -19,7 +18,6 @@ const ModuleModal = ({ isOpen, onClose, module, onEnroll }) => {
         <p className="text-xl text-center text-gray-700 mb-4">
           {module.description}
         </p>
-        <p className="text-gray-700 mb-4">{module.content}</p>
         <div className="flex justify-between items-center mt-4">
           {authState.user.role.toLowerCase() === "student" && (
             <button
