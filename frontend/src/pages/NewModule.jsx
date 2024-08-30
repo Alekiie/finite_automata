@@ -8,7 +8,7 @@ export function NewModule() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    content: "",
+    content_title: "",
     resourceType: "pdf", // default to PDF
     resource: null,
   });
@@ -48,7 +48,7 @@ export function NewModule() {
     const formDataToSend = new FormData();
     formDataToSend.append("title", formData.title);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("content", formData.content);
+    formDataToSend.append("content_title", formData.content_title);
     formDataToSend.append("resourceType", formData.resourceType);
     if (formData.resource) {
       formDataToSend.append("resource", formData.resource);
@@ -71,7 +71,7 @@ export function NewModule() {
         setFormData({
           title: "",
           description: "",
-          content: "",
+          content_title: "",
           resourceType: "pdf",
           resource: null,
         });
@@ -118,9 +118,10 @@ export function NewModule() {
           <label className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <textarea
-            name="content"
-            value={formData.content}
+          <input
+          type="text"
+            name="content_title"
+            value={formData.content_title}
             onChange={handleChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             required
