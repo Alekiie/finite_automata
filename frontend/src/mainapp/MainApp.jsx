@@ -15,6 +15,7 @@ import {Instructors} from '../pages/Instructors';
 // import components
 import Navbar from '../components/NavBar';
 import Sidebar from '../components/Sidebar';
+import ModuleContent from '../components/ModuleContent';
 
 
 
@@ -40,6 +41,7 @@ function MainApp() {
                     <Route path="/profile" element={authState.isAuthenticated ? <Profile/> : <Navigate to="/login" />} />
                     <Route path="/modules" element={authState.isAuthenticated ? <Modules /> : <Navigate to="/login" />} />
                     <Route path="/new_module" element={authState.isAuthenticated ? <NewModule /> : <Navigate to="/login" />} />
+                    <Route path="/module/:id" element={authState.isAuthenticated ? <ModuleContent/> : <Navigate to="/login" />} />
                     <Route path="/instructors" element={authState.isAuthenticated ? <Instructors /> : <Navigate to="/login" />} />
                 </Routes>
             </Router>

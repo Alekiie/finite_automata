@@ -4,7 +4,7 @@ import { GrCheckmark } from "react-icons/gr";
 import AuthContext from "../context/AuthContext"; // Import the AuthContext
 
 const ModuleModal = ({ isOpen, onClose, module, onEnroll }) => {
-  console.log(module)
+  // console.log(module)
   const { authState } = useContext(AuthContext); // Access authState to check the user role
 
   if (!isOpen) return null;
