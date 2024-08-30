@@ -18,10 +18,15 @@ export function NewModule() {
 
     if (type === "file") {
       const file = files[0];
-      if (file && file.type !== "application/pdf") {
-        alert("Please upload a PDF file.");
+      const isValidFile =
+        (formData.resourceType === "pdf" && file.type === "application/pdf") ||
+        (formData.resourceType === "video" && file.type.startsWith("video/"));
+
+      if (!isValidFile) {
+        alert(`Please upload a valid ${formData.resourceType.toUpperCase()} file.`);
         return;
       }
+
       setFormData({
         ...formData,
         resource: file,
@@ -48,10 +53,10 @@ export function NewModule() {
     const formDataToSend = new FormData();
     formDataToSend.append("title", formData.title);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("content_title", formData.content_title);
-    formDataToSend.append("resourceType", formData.resourceType);
+    formDataToSend.append("contentTitle", formData.content_title);
+    formDataToSend.append("contentType", formData.resourceType);
     if (formData.resource) {
-      formDataToSend.append("resource", formData.resource);
+      formDataToSend.append("contentFile", formData.resource); // Changed key to "contentFile"
     }
 
     try {
@@ -85,14 +90,10 @@ export function NewModule() {
 
   return (
     <div className="container w-2/3 mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Create New Module
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Create New Module</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Title
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Title</label>
           <input
             type="text"
             name="title"
@@ -103,9 +104,7 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea
             name="description"
             value={formData.description}
@@ -115,11 +114,9 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Content
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Content Title</label>
           <input
-          type="text"
+            type="text"
             name="content_title"
             value={formData.content_title}
             onChange={handleChange}
@@ -128,9 +125,7 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Resource Type
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Resource Type</label>
           <select
             name="resourceType"
             value={formData.resourceType}
@@ -140,14 +135,12 @@ export function NewModule() {
             <option value="pdf">PDF</option>
             <option value="video">Video</option>
             <option value="text">Text</option>
-            <option value="test">Test</option>
+            <option value="quiz">Quiz</option> {/* Changed "test" to "quiz" */}
           </select>
         </div>
         {formData.resourceType === "pdf" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Upload PDF
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Upload PDF</label>
             <input
               type="file"
               name="resource"
@@ -158,9 +151,7 @@ export function NewModule() {
         )}
         {formData.resourceType === "video" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Video Link
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Video Link</label>
             <input
               type="text"
               name="resource"
@@ -172,9 +163,7 @@ export function NewModule() {
         )}
         {formData.resourceType === "text" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Text Content
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Text Content</label>
             <textarea
               name="resource"
               value={formData.resource || ""}
@@ -183,13 +172,10 @@ export function NewModule() {
             />
           </div>
         )}
-        {formData.resourceType === "test" && (
+        {formData.resourceType === "quiz" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Test Questions
-            </label>
-            <input
-              type="text"
+            <label className="block text-sm font-medium text-gray-700">Quiz Questions</label>
+            <textarea
               name="resource"
               value={formData.resource || ""}
               onChange={handleChange}
