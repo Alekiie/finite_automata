@@ -3,48 +3,83 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 
 export function NewModule() {
-
-    const {authState} = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     content: "",
+    resourceType: "pdf", // default to PDF
+    resource: null,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      const file = files[0];
+      if (file && file.type !== "application/pdf") {
+        alert("Please upload a PDF file.");
+        return;
+      }
+      setFormData({
+        ...formData,
+        resource: file,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleResourceTypeChange = (e) => {
     setFormData({
       ...formData,
-      [name]: value,
+      resourceType: e.target.value,
+      resource: null, // Reset resource when type changes
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("content", formData.content);
+    formDataToSend.append("resourceType", formData.resourceType);
+    if (formData.resource) {
+      formDataToSend.append("resource", formData.resource);
+    }
+
     try {
-      const response = await axios.post("http://localhost:3000/modules", formData, {
-        headers: {
-            Authorization: `Bearer ${authState.user.accessToken}`
+      const response = await axios.post(
+        "http://localhost:3000/modules",
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       if (response.status === 201) {
         console.log("Module created successfully:", response.data);
-        // Reset form or show success message
         setFormData({
           title: "",
           description: "",
           content: "",
+          resourceType: "pdf",
+          resource: null,
         });
       } else {
         console.error("Error creating module:", response.data.message);
-        // Show error message
       }
     } catch (error) {
       console.error("Error:", error);
-      // Show error message
     }
   };
 
@@ -91,6 +126,76 @@ export function NewModule() {
             required
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Resource Type
+          </label>
+          <select
+            name="resourceType"
+            value={formData.resourceType}
+            onChange={handleResourceTypeChange}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          >
+            <option value="pdf">PDF</option>
+            <option value="video">Video</option>
+            <option value="text">Text</option>
+            <option value="test">Test</option>
+          </select>
+        </div>
+        {formData.resourceType === "pdf" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload PDF
+            </label>
+            <input
+              type="file"
+              name="resource"
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        )}
+        {formData.resourceType === "video" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Video Link
+            </label>
+            <input
+              type="text"
+              name="resource"
+              value={formData.resource || ""}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        )}
+        {formData.resourceType === "text" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Text Content
+            </label>
+            <textarea
+              name="resource"
+              value={formData.resource || ""}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        )}
+        {formData.resourceType === "test" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Test Questions
+            </label>
+            <input
+              type="text"
+              name="resource"
+              value={formData.resource || ""}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            />
+          </div>
+        )}
         <div>
           <button
             type="submit"
