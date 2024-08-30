@@ -12,8 +12,8 @@ export function Modules() {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedModule, setSelectedModule] = useState(null); // State to manage selected module
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchModules = async () => {
@@ -49,16 +49,19 @@ export function Modules() {
   };
 
   const handleEnroll = async () => {
-    // Logic for enrolling in the module (e.g., API call)
     try {
-      await axios.post("http://localhost:3000/enroll", {moduleId: selectedModule._id}, {
-        headers: {
-          Authorization: `Bearer ${authState.user.accessToken}`,
-        },
-      }).data;
+      await axios.post("http://localhost:3000/enroll", 
+        { moduleId: selectedModule._id }, 
+        {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
+        }
+      );
       console.log("Enrolling in module:", selectedModule.title);
-      // Close the modal after enrolling
       handleCloseModal();
+      // Navigate to the module content page after successful enrollment
+      navigate(`/module/${selectedModule._id}`);
     } catch (error) {
       console.error(error);
     }
@@ -96,65 +99,61 @@ export function Modules() {
               </tr>
             </thead>
             <tbody className="bg-white">
-
-              {
-                modules ? (
-                  modules.map((module, index) => (
-                    <tr key={index} className="text-gray-700">
-                      <td className="px-4 py-3 border">
-                        <div className="flex items-center text-sm">
-                          <div className="relative w-8 h-8 mr-3 rounded-full md:block">
-                            <img
-                              className="object-cover w-full h-full rounded-full"
-                              src="https://images.pexels.com/photos/5212324/pexels-photo-5212324.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                              alt="Module"
-                              loading="lazy"
-                            />
-                            <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
-                          </div>
-                          <div>
-                            <p className="font-semibold text-black">
-                              {module.author.firstName} {module.author.lastName}
-                            </p>
-                            <p className="text-xs text-gray-600">{module.author.role}</p>
-                          </div>
+              {modules.length > 0 ? (
+                modules.map((module, index) => (
+                  <tr key={index} className="text-gray-700">
+                    <td className="px-4 py-3 border">
+                      <div className="flex items-center text-sm">
+                        <div className="relative w-8 h-8 mr-3 rounded-full md:block">
+                          <img
+                            className="object-cover w-full h-full rounded-full"
+                            src="https://images.pexels.com/photos/5212324/pexels-photo-5212324.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+                            alt="Module"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-ms font-semibold border">
-                        {module.title}
-                      </td>
-                      <td className="px-4 py-3 text-ms border">
-                        <span className="px-2 py-1 font-semibold leading-tight rounded-sm">
-                          {module.description}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-sm border">
-                        {new Date(module.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-4 py-3 text-sm border">
-                        <button
-                          onClick={() => handleViewModule(module)}
-                          className="w-3/4 px-2 py-1 text-black bg-blue-400 text-center rounded"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="text-center py-4 text-gray-500">
-                      No modules available.
+                        <div>
+                          <p className="font-semibold text-black">
+                            {module.author.firstName} {module.author.lastName}
+                          </p>
+                          <p className="text-xs text-gray-600">{module.author.role}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-ms font-semibold border">
+                      {module.title}
+                    </td>
+                    <td className="px-4 py-3 text-ms border">
+                      <span className="px-2 py-1 font-semibold leading-tight rounded-sm">
+                        {module.description}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm border">
+                      {new Date(module.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-3 text-sm border">
+                      <button
+                        onClick={() => handleViewModule(module)}
+                        className="w-3/4 px-2 py-1 text-black bg-blue-400 text-center rounded"
+                      >
+                        View
+                      </button>
                     </td>
                   </tr>
-                )
-                }
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4 text-gray-500">
+                    No modules available.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Render the ModuleModal */}
       {selectedModule && (
         <ModuleModal
           isOpen={isModalOpen}
