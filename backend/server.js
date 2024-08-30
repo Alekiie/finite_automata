@@ -10,6 +10,7 @@ const instructors = require('./routes/instructors')
 const stats = require('./routes/stats')
 const {connectDb} = require('./configs/db');
 const dotenv = require("dotenv");
+
 dotenv.config();
 
 /*MIDDLEWARES*/
@@ -28,6 +29,7 @@ app.use('/stats',stats)
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
 
 
 // connect to database

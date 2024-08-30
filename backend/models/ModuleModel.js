@@ -14,22 +14,20 @@ const ModuleSchema = new Schema({
   },
   content: 
     {
-      // type: {
-      //   type: String,
-      //   enum: ['text', 'video', 'quiz', 'exercise'], // The type of content (e.g., a text lesson, video, quiz, or exercise)
-      //   required: true,
-      // },
-      // title: {
-      //   type: String,
-      //   required: true,
-      // },
-      // data: {
-      //   type: Schema.Types.Mixed, // This could store text, video links, quiz questions, etc.
-      //   required: true,
-      // },
-      type: String,
-      required: true,
-      trim : true,
+      type: {
+        type: String,
+        enum: ['text', 'video', 'quiz','pdf', 'exercise'], // The type of content (e.g., a text lesson, video, quiz, or exercise)
+        required: true,
+      },
+      title: {
+        type: String,
+        required: true,
+      },
+      data: {
+        type: Schema.Types.Mixed, // This could store text, video links, quiz questions, etc.
+        required: true,
+      },
+     
     },
   
   author: {
