@@ -36,7 +36,7 @@ const ModuleContent = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-semibold mb-6">{module.title}</h1>
       <p className="text-lg mb-4">{module.description}</p>
-      <div className="content">{module.content}</div>
+      <div className="content">{module.content.title}</div>
     </div>
   );
 };

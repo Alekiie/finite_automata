@@ -8,7 +8,7 @@ const modules=require('./routes/modules')
 const enrollToModule = require("./routes/enrollTomodule");
 const instructors = require('./routes/instructors')
 const stats = require('./routes/stats')
-const  viewModule =require('./routes/viewModule')
+const  viewroute =require('./routes/viewModule')
 const {connectDb} = require('./configs/db');
 const dotenv = require("dotenv");
 
@@ -26,7 +26,7 @@ app.use('/modules',modules)
 app.use("/enroll", enrollToModule);
 app.use('/instructors',instructors)
 app.use('/stats',stats)
-app.use('/module/:moduleId',viewModule)
+app.use('/module',viewroute)
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
