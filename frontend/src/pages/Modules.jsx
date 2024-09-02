@@ -51,8 +51,9 @@ export function Modules() {
 
   const handleEnroll = async () => {
     try {
-      await axios.post("http://localhost:3000/enroll", 
-        { moduleId: selectedModule._id }, 
+      await axios.post(
+        "http://localhost:3000/enroll",
+        { moduleId: selectedModule._id },
         {
           headers: {
             Authorization: `Bearer ${authState.user.accessToken}`,
@@ -100,7 +101,7 @@ export function Modules() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {modules.length > 0 ? (
+              {modules ? (
                 modules.map((module, index) => (
                   <tr key={index} className="text-gray-700">
                     <td className="px-4 py-3 border">
@@ -112,13 +113,18 @@ export function Modules() {
                             alt="Module"
                             loading="lazy"
                           />
-                          <div className="absolute inset-0 rounded-full shadow-inner" aria-hidden="true"></div>
+                          <div
+                            className="absolute inset-0 rounded-full shadow-inner"
+                            aria-hidden="true"
+                          ></div>
                         </div>
                         <div>
                           <p className="font-semibold text-black">
                             {module.author.firstName} {module.author.lastName}
                           </p>
-                          <p className="text-xs text-gray-600">{module.author.role}</p>
+                          <p className="text-xs text-gray-600">
+                            {module.author.role}
+                          </p>
                         </div>
                       </div>
                     </td>
