@@ -27,7 +27,7 @@ export function Modules() {
             userId: authState.user.id,
           },
         });
-        console.log(response.data.availableModules);
+        // console.log(response.data.availableModules);
         setModules(response.data.availableModules);
         setLoading(false);
       } catch (error) {
