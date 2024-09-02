@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../context/AuthContext";
 
 export function NewModule() {
   const { authState } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -72,7 +74,6 @@ export function NewModule() {
       );
 
       if (response.status === 201) {
-        console.log("Module created successfully:", response.data);
         setFormData({
           title: "",
           description: "",
@@ -80,6 +81,9 @@ export function NewModule() {
           resourceType: "pdf",
           resource: null,
         });
+
+        navigate('/modules');
+
       } else {
         console.error("Error creating module:", response.data.message);
       }
