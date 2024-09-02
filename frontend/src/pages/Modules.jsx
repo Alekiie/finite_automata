@@ -69,7 +69,7 @@ export function Modules() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>Loading Modules...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
