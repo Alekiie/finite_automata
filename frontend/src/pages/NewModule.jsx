@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../configs/axios";
 import AuthContext from "../context/AuthContext";
 
 export function NewModule() {
@@ -62,8 +62,7 @@ export function NewModule() {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/modules",
+      const response = await axios.post("/modules",
         formDataToSend,
         {
           headers: {

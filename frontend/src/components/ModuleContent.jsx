@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../configs/axios";
 import AuthContext from "../context/AuthContext";
 
 const ModuleContent = () => {
   const { id } = useParams();
+  console.log(id)
   const { authState } = useContext(AuthContext);
   const [module, setModule] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ const ModuleContent = () => {
   useEffect(() => {
     const fetchModuleContent = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/module/${id}`, {
+        const response = await axios.get(`/module/${id}`, {
           headers: {
             Authorization: `Bearer ${authState.user.accessToken}`,
           },
