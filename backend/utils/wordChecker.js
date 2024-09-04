@@ -9,30 +9,42 @@ function checkWord(word, nonTerminal = "S", grammar) {
     for (const production of grammar[nonTerminal]) {
         if (production === "") continue; // Skip empty production
 
-        // Separate terminal and the rest of the production
-        const terminal = production[0];
-        const remainingProduction = production.substring(1);
+        // If the production is longer than the word, skip it
+        if (production.length > word.length) continue;
 
-        if (word.startsWith(terminal)) {
-            // If the remaining production is empty, check the rest of the word
-            if (remainingProduction.length === 0 && word.length === 1) {
-                return true;
-            } else if (remainingProduction.length === 0) {
-                // If no non-terminal remains, proceed with the rest of the word
-                if (checkWord(word.substring(1), nonTerminal, grammar)) {
+        let matches = true;
+        let index = 0;
+
+        // Check each symbol in the production
+        for (let i = 0; i < production.length; i++) {
+            const symbol = production[i];
+
+            if (grammar[symbol]) {
+                // If symbol is a non-terminal, recursively check the remaining word
+                if (checkWord(word.substring(index), symbol, grammar)) {
                     return true;
+                } else {
+                    matches = false;
+                    break;
                 }
+            } else if (word[index] === symbol) {
+                // If symbol is a terminal, advance to the next character in the word
+                index++;
             } else {
-                // Recursively check the remaining word with the next non-terminal
-                if (checkWord(word.substring(1), remainingProduction, grammar)) {
-                    return true;
-                }
+                matches = false;
+                break;
             }
+        }
+
+        // If the entire production matches the word
+        if (matches && index === word.length) {
+            return true;
         }
     }
 
     return false;
 }
+
 
 module.exports = {
     checkWord,

@@ -56,7 +56,7 @@ function generateWordsFromGrammar(startSymbol, maxLength) {
     // Generate and return the words from the generated grammar
     return generateWords(grammar, 'S', maxLength);
 }
-
+console.log(generateWordsFromGrammar('S', 5));
 
 
 module.exports = { generateWordsFromGrammar };
