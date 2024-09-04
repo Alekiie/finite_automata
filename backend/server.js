@@ -8,6 +8,7 @@ const modules=require('./routes/modules')
 const enrollToModule = require("./routes/enrollTomodule");
 const instructors = require('./routes/instructors')
 const stats = require('./routes/stats')
+const enrolledAll=require('./routes/enrolled.route')
 const  viewroute =require('./routes/viewModule')
 const {connectDb} = require('./configs/db');
 const dotenv = require("dotenv");
@@ -24,6 +25,7 @@ app.use('/login', login);
 app.use('/users', users);
 app.use('/modules',modules)
 app.use("/enroll", enrollToModule);
+app.use('/enrolled',enrolledAll)
 app.use('/instructors',instructors)
 app.use('/stats',stats)
 app.use('/module',viewroute)
