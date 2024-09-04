@@ -77,13 +77,13 @@ const ModuleContent = () => {
 
   const completeModule = async () =>{
     try {
-      const result = await axios.post('/module_done', {
+      await axios.post('/complete', {
         headers:{
           Authorization: `Bearer ${authState.user.accessToken}`
         }
       })
     } catch (error) {
-      
+      setError(error);
     }
   }
 
