@@ -2,6 +2,7 @@ const Enrollment = require('../models/EnrolledModules');
 const Users = require('../models/UserModel');
 const jwt = require("jsonwebtoken");
 const authenticateUser = require('../utils/auth.util');
+const Module = require('../models/ModuleModel');
 
 
 const enrollToModule = async (req, res) => {
@@ -22,7 +23,7 @@ const enrollToModule = async (req, res) => {
 
     await enrollment.save();
 
-
+    await Module.findByIdAndUpdate(moduleId,{$addToSet:{enrolledUsers:user._id}});
     return res.status(201).json({ message: 'Module enrolled successfully', enrollment });
   } catch (error) {
 
