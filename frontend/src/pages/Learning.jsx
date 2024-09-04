@@ -16,7 +16,7 @@ export function Learning() {
       try {
         const response = await axios.get("/enrolled", {
           headers: {
-            Authorization: `Bearer ${authState.user.authToken}`,
+            Authorization: `Bearer ${authState.user.accessToken}`,
           }
         });
 
