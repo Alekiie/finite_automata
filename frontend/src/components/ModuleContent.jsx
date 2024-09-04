@@ -75,17 +75,32 @@ const ModuleContent = () => {
     }
   };
 
-  const completeModule = async () =>{
+  const completeModule = async () => {
     try {
-      await axios.post('/complete', {
-        headers:{
-          Authorization: `Bearer ${authState.user.accessToken}`
+      const response = await axios.post(
+        "/complete",
+        { moduleId: module._id },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
         }
-      })
+      );
+
+      // Display the success message
+      alert(response.data.message);
+
+      // Navigate back to the learning page
+      navigate("/learning");
     } catch (error) {
-      setError(error);
+      console.error(
+        "Error completing the module:",
+        error.response || error.message
+      );
+      setError("Error completing the module. Please try again later.");
     }
-  }
+  };
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -126,7 +141,12 @@ const ModuleContent = () => {
         </div>
       )}
       <div className="w-full flex justify-end p-3">
-        <button onClick={completeModule} className="px-4 py-2 bg-green-500 hover:bg-green-700 text-white transition-all ease-in-out rounded shadow-lg">Complete</button>
+        <button
+          onClick={completeModule}
+          className="px-4 py-2 bg-green-500 hover:bg-green-700 text-white transition-all ease-in-out rounded shadow-lg"
+        >
+          Complete
+        </button>
       </div>
     </div>
   );

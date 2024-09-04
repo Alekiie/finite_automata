@@ -21,7 +21,7 @@ export function Learning() {
         });
 
         setModules(response.data);
-        // console.log(response.data)
+        console.log(response.data)
         setLoading(false);
       } catch (error) {
         setError(error.message);
