@@ -20,7 +20,7 @@ export function Learning() {
           }
         });
 
-        setModules(response.data.availableModules);
+        setModules(response.data);
         setLoading(false);
       } catch (error) {
         setError(error.message);
