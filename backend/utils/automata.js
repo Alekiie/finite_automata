@@ -1,46 +1,59 @@
-const readline = require('readline');
 
-// Function to generate a random RLG with meaningful productions
 function generateRandomRLG() {
-    const nonTerminals = ['S', 'A', 'B', 'C', 'D'];
-    const terminals = ['a', 'b', 'c'];
-    const grammar = {};
-    const maxProductions = 3; // Maximum number of productions per non-terminal
-    const maxLength = 2; // Maximum length of the right-hand side of a production
+  const nonTerminals = ["S", "A", "B", "C", "D"];
+  const terminals = ["a", "b", "c"];
+  const grammar = {};
+  const maxProductions = 3; // Maximum number of productions per non-terminal
+  const maxLength = 2; // Maximum length of the right-hand side of a production
 
-    nonTerminals.forEach((nonTerminal, index) => {
-        const numberOfProductions = Math.floor(Math.random() * maxProductions) + 1;
-        const productions = [];
+  nonTerminals.forEach((nonTerminal) => {
+    const numberOfProductions = Math.floor(Math.random() * maxProductions) + 1;
+    const productions = new Set();
+    let hasRequiredNonTerminal = false;
 
-        for (let i = 0; i < numberOfProductions; i++) {
-            let production = '';
-            const productionLength = Math.floor(Math.random() * maxLength) + 1;
+    for (let i = 0; i < numberOfProductions; i++) {
+      let production = "";
+      const productionLength = Math.floor(Math.random() * maxLength) + 1;
 
-            for (let j = 0; j < productionLength; j++) {
-                // Prioritize terminals in the production
-                if (Math.random() > 0.3 || (index === 0 && j === productionLength - 1)) { 
-                    production += terminals[Math.floor(Math.random() * terminals.length)];
-                } else {
-                    // Avoid too many self-references to avoid infinite loops
-                    let nextNonTerminal = nonTerminals[Math.floor(Math.random() * nonTerminals.length)];
-                    while (nextNonTerminal === nonTerminal && Math.random() < 0.7) {
-                        nextNonTerminal = nonTerminals[Math.floor(Math.random() * nonTerminals.length)];
-                    }
-                    production += nextNonTerminal;
-                }
-            }
+      for (let j = 0; j < productionLength; j++) {
+        if (
+          Math.random() > 0.3 ||
+          (nonTerminal === "S" && j === productionLength - 1)
+        ) {
+          production += terminals[Math.floor(Math.random() * terminals.length)];
+        } else {
+          let nextNonTerminal =
+            nonTerminals[Math.floor(Math.random() * nonTerminals.length)];
 
-            // Ensure there's at least one terminal-only production in S
-            if (index === 0 && productions.length === 0 && Math.random() > 0.5) {
-                production = terminals[Math.floor(Math.random() * terminals.length)];
-            }
+          // Avoid self-references in `S` and prioritize other non-terminals
+          while (nonTerminal === "S" && nextNonTerminal === "S") {
+            nextNonTerminal =
+              nonTerminals[Math.floor(Math.random() * (nonTerminals.length - 1)) + 1];
+          }
 
-            productions.push(production);
+          production += nextNonTerminal;
+
+          if (nonTerminal === "S" && ["A", "B", "C", "D"].includes(nextNonTerminal)) {
+            hasRequiredNonTerminal = true;
+          }
         }
+      }
 
-        grammar[nonTerminal] = productions;
-    });
+      productions.add(production);
+    }
 
-    return grammar;
+    // Ensure at least one production for S contains A, B, C, or D
+    if (nonTerminal === "S" && !hasRequiredNonTerminal) {
+      const randomTerminal = terminals[Math.floor(Math.random() * terminals.length)];
+      const randomNonTerminal = nonTerminals[Math.floor(Math.random() * (nonTerminals.length - 1)) + 1];
+      productions.add(randomTerminal + randomNonTerminal);
+    }
+
+    grammar[nonTerminal] = Array.from(productions);
+  });
+
+  return grammar;
 }
-module.exports={generateRandomRLG};
+
+
+module.exports = { generateRandomRLG };
