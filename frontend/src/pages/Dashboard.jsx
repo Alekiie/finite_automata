@@ -216,28 +216,45 @@ export const Dashboard = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col w-full mt-3">
-              <h2 className="text-2xl text-center font-semibold text-gray-700 mb-6">
-                Your Actions
-              </h2>
-              <article className="flex items-center justify-around">
-                <div className="flex items-center justify-center">
-                  <button onClick={()=>{navigate('/learning')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
-                    Continue Learning
-                  </button>
-                </div>
-                <div className="flex items-center justify-center">
-                  <button onClick={()=>{navigate('/exercises')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
-                    Exercises
-                  </button>
-                </div>
-                <div className="flex items-center justify-center">
-                  <button onClick={()=>{navigate('/automatons')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
-                    Automatons
-                  </button>
-                </div>
-              </article>
-            </div>
+            {userRole === "student" && (
+              <div className="flex flex-col w-full mt-3">
+                <h2 className="text-2xl text-center font-semibold text-gray-700 mb-6">
+                  Your Actions
+                </h2>
+                <article className="flex items-center justify-around">
+                  <div className="flex items-center justify-center">
+                    <button
+                      onClick={() => {
+                        navigate("/learning");
+                      }}
+                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
+                    >
+                      Continue Learning
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <button
+                      onClick={() => {
+                        navigate("/exercises");
+                      }}
+                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
+                    >
+                      Exercises
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <button
+                      onClick={() => {
+                        navigate("/algorithims");
+                      }}
+                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
+                    >
+                      Algorithims
+                    </button>
+                  </div>
+                </article>
+              </div>
+            )}
           </section>
 
           {userRole === "student" && (

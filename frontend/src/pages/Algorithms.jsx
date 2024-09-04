@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Automatons() {
+export function Algorithms() {
   return (
     <div>Automatons</div>
   )
