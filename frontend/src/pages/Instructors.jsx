@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../configs/axios';
 import AuthContext from '../context/AuthContext';
 
 export function Instructors() {
@@ -10,8 +10,7 @@ export function Instructors() {
     const getInstructors = async () => {
       try {
         // Make the request and await the response
-        const response = await axios.get("http://localhost:3000/instructors");
-        console.log("Instructors response:", response.data);
+        const response = await axios.get("/instructors");
         
         // Access the instructors array from the response
         const result = response.data.instructors;

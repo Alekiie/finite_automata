@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios';
+import axios from '../configs/axios';
 
 export const Signup = () => {
 
@@ -29,8 +29,8 @@ export const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:3000/register', formData).data;
-            setSuccess('Registration successful!');
+            const response = await axios.post('/register', formData).data;
+            response ? setSuccess('Registration successful!') : setSuccess('Registration Request Failed');
             setError('');
 
             setTimeout(()=>{

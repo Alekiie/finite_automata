@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import axios from "../configs/axios";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import AuthContext from "../context/AuthContext";
@@ -12,6 +12,7 @@ export function Modules() {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState('');
   const [selectedModule, setSelectedModule] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -19,7 +20,7 @@ export function Modules() {
     const fetchModules = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:3000/modules", {
+        const response = await axios.get("/modules", {
           headers: {
             Authorization: `Bearer ${authState.user.accessToken}`,
           },
@@ -50,8 +51,7 @@ export function Modules() {
 
   const handleEnroll = async () => {
     try {
-      await axios.post(
-        "http://localhost:3000/enroll",
+      const result = await axios.post("/enroll",
         { moduleId: selectedModule._id },
         {
           headers: {
@@ -59,12 +59,34 @@ export function Modules() {
           },
         }
       );
-      console.log("Enrolling in module:", selectedModule.title);
-      handleCloseModal();
-      // Navigate to the module content page after successful enrollment
-      navigate(`/module/${selectedModule._id}`);
+      result ? setMessage('Enrolled Successfully, redirecting to learning...') : null;
+      //wait for message to show
+      setTimeout(()=>{
+        handleCloseModal();
+        // Navigate to the learning page after successful enrollment
+        navigate(`/learning`);
+      },2000);
     } catch (error) {
-      console.error(error);
+      //first set message to empty string
+      setMessage('');
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        if (error.response.status === 400) {
+          setMessage("You're already enrolled. redirecting to learning...");
+          setTimeout(()=>{
+            navigate('/learning');
+          },2000)
+        } else {
+          setError(`An error occurred: ${error.response.statusText}`);
+        }
+      } else if (error.request) {
+        // Request was made but no response was received
+        setError("No response received from the server. Please try again later.");
+      } else {
+        // Something else caused the error
+        setError(`Error: ${error.message}`);
+      }
+      setLoading(false);
     }
   };
 
@@ -162,10 +184,12 @@ export function Modules() {
 
       {selectedModule && (
         <ModuleModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          module={selectedModule}
-          onEnroll={handleEnroll}
+        isOpen={isModalOpen}
+        module={selectedModule}
+        onEnroll={handleEnroll}
+        message={message}
+        setMessage={setMessage}
+        onClose={handleCloseModal}
         />
       )}
     </section>

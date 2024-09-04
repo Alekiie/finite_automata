@@ -10,6 +10,9 @@ import { Profile } from '../pages/Profile';
 import {Modules} from '../pages/Modules';
 import {NewModule} from '../pages/NewModule';
 import {Instructors} from '../pages/Instructors';
+import { Learning } from '../pages/Learning';
+import { Exercises } from '../pages/Exercises';
+import { Automatons } from '../pages/Automatons';
 
 
 // import components
@@ -40,6 +43,9 @@ function MainApp() {
                     <Route path="/dashboard" element={authState.isAuthenticated ? <Dashboard/> : <Navigate to="/login" />} />
                     <Route path="/profile" element={authState.isAuthenticated ? <Profile/> : <Navigate to="/login" />} />
                     <Route path="/modules" element={authState.isAuthenticated ? <Modules /> : <Navigate to="/login" />} />
+                    <Route path="/learning" element={authState.isAuthenticated ? <Learning /> : <Navigate to="/login" />} />
+                    <Route path="/exercises" element={authState.isAuthenticated ? <Exercises /> : <Navigate to="/login" />} />
+                    <Route path="/automatons" element={authState.isAuthenticated ? <Automatons /> : <Navigate to="/login" />} />
                     <Route path="/new_module" element={authState.isAuthenticated ? <NewModule /> : <Navigate to="/login" />} />
                     <Route path="/module/:id" element={authState.isAuthenticated ? <ModuleContent/> : <Navigate to="/login" />} />
                     <Route path="/instructors" element={authState.isAuthenticated ? <Instructors /> : <Navigate to="/login" />} />

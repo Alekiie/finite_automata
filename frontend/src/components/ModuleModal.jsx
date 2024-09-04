@@ -3,7 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { GrCheckmark } from "react-icons/gr";
 import AuthContext from "../context/AuthContext";
 
-const ModuleModal = ({ isOpen, onClose, module, onEnroll }) => {
+const ModuleModal = ({ isOpen, module, onEnroll, message, setMessage, onClose, }) => {
   const { authState } = useContext(AuthContext);
 
   if (!isOpen) return null;
@@ -35,6 +35,9 @@ const ModuleModal = ({ isOpen, onClose, module, onEnroll }) => {
             <span>Close</span>
             <IoCloseSharp />
           </button>
+        </div>
+        <div className="w-full mt-3 text-center">
+          <p className={message === 'Enrolled Successfully, redirecting to learning...' ? 'text-green-400': 'text-red-500'}>{message}</p>
         </div>
       </div>
     </div>

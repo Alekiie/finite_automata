@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import {useNavigate} from "react-router-dom";
 import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,7 +12,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
-import axios from "axios";
+import axios from '../configs/axios'
 import AuthContext from "../context/AuthContext";
 
 // Register components for chart.js
@@ -37,6 +38,7 @@ const MemoizedLineChart = React.memo(({ data }) => (
 ));
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
   const [stats, setsStats] = useState("");
 
@@ -78,7 +80,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/stats", {
+        const response = await axios.get("/stats", {
           headers: {
             Authorization: `Bearer ${authState.user.accessToken}`,
           },
@@ -205,7 +207,7 @@ export const Dashboard = () => {
                   {stats.activeModules}
                 </p>
               </div>
-              <div className="bg-white p-6 shadow-md rounded-lg">
+              <div className="bg-white p-6 shadow-md text-center rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
                   Total Time Spent
                 </h3>
@@ -213,6 +215,28 @@ export const Dashboard = () => {
                   {stats.totalTimeSpent} hrs
                 </p>
               </div>
+            </div>
+            <div className="flex flex-col w-full mt-3">
+              <h2 className="text-2xl text-center font-semibold text-gray-700 mb-6">
+                Your Actions
+              </h2>
+              <article className="flex items-center justify-around">
+                <div className="flex items-center justify-center">
+                  <button onClick={()=>{navigate('/learning')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
+                    Continue Learning
+                  </button>
+                </div>
+                <div className="flex items-center justify-center">
+                  <button onClick={()=>{navigate('/exercises')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
+                    Exercises
+                  </button>
+                </div>
+                <div className="flex items-center justify-center">
+                  <button onClick={()=>{navigate('/automatons')}} className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer">
+                    Automatons
+                  </button>
+                </div>
+              </article>
             </div>
           </section>
 
