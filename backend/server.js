@@ -12,6 +12,7 @@ const enrolledAll = require("./routes/enrolled.route");
 const viewroute = require("./routes/viewModule");
 const allQuestionsData = require("./routes/questions.route");
 const checkGrammar=require('./routes/checkGrammar.route')
+const markComplete=require('./routes/markModuleComplete.route')
 const { connectDb } = require("./configs/db");
 const dotenv = require("dotenv");
 
@@ -33,6 +34,7 @@ app.use("/stats", stats);
 app.use("/module", viewroute);
 app.use("/exercises", allQuestionsData);
 app.use("/check",checkGrammar)
+app.use("/complete",markComplete)
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
