@@ -25,10 +25,13 @@ export function ExercisesList() {
 
     const getCompletedTests = async () => {
       try {
-        const response = await axios.get("/results", {
-          headers: { Authorization: `Bearer ${authState.user.accessToken}` },
+        const response = await axios.get("/results",{
+          headers: {Authorization: `Bearer ${authState.user.accessToken}`}
         });
-        setCompletedTests(response.data);
+        const completedTestIndexes = response.data.map(
+          (result) => result.testIndex
+        );
+        setCompletedTests(completedTestIndexes); // Store the test indexes that are completed
       } catch (err) {
         console.error("Failed to load completed tests");
       }
@@ -54,7 +57,7 @@ export function ExercisesList() {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {exercises.map((test, index) => {
-          const isCompleted = completedTests.includes(index);
+          const isCompleted = completedTests.includes(index); // Check if the testIndex is in completedTests array
 
           return (
             <div
