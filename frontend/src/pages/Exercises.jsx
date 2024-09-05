@@ -81,6 +81,16 @@ export function Exercises() {
       .catch((err) => {
         setError("Failed to submit results.");
       });
+
+    // Move to next test after submission
+    if (currentTestIndex < exercises.length - 1) {
+      setCurrentTestIndex(currentTestIndex + 1); // Move to the next test
+      setCurrentQuestionIndex(0); // Reset question index for the next test
+      setScores([]); // Reset scores for the next test
+      setSubmitted(false); // Reset submitted state for the next test
+    } else {
+      alert("You have completed all the tests!"); // End of all tests
+    }
   };
 
   if (loading) return <div className="text-center py-4">Loading...</div>;
@@ -133,7 +143,7 @@ export function Exercises() {
             onClick={handleFinalSubmit}
             className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
           >
-            Submit Test
+            Submit Test and Move to Next
           </button>
         </div>
       )}
