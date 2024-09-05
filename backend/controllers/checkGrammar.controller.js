@@ -3,15 +3,15 @@ const { generateRandomRLG } = require("../utils/automata");
 
 const checkWordsController = (req, res) => {
   try {
-    const { words } = req.body; // Get the array of words from the request body
-    if (!Array.isArray(words)) {
+    const { userWords, grammar } = req.body;
+    if (!Array.isArray(userWords)) {
       return res
         .status(400)
         .json({ message: "Invalid input: 'words' must be an array." });
     }
 
-    const grammar = generateRandomRLG(); // Generate the grammar
-    const results = words.map((word) => {
+    // const grammar = generateRandomRLG(); // Generate the grammar
+    const results = userWords.map((word) => {
       const isAccepted = checkWord(word, "S", grammar);
       return {
         word,

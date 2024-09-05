@@ -4,7 +4,7 @@ const {
   generatedWords,
 } = require("../controllers/generateWordsFromGrammar.controller");
 
-router.get("/", generatedWords);
+router.post("/", generatedWords);
 
 
 module.exports = router;
