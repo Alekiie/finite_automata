@@ -66,10 +66,18 @@ export function Exercises() {
     // Send final score to the backend
     const totalScore = scores.reduce((acc, score) => acc + score, 0);
     axios
-      .post("/submit-test", {
-        testIndex: currentTestIndex,
-        score: totalScore,
-      })
+      .post(
+        "/postResults",
+        {
+          testIndex: currentTestIndex,
+          score: totalScore,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
+        }
+      )
       .catch((err) => {
         setError("Failed to submit results.");
       });
