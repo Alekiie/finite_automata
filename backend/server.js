@@ -11,8 +11,9 @@ const stats = require("./routes/stats");
 const enrolledAll = require("./routes/enrolled.route");
 const viewroute = require("./routes/viewModule");
 const allQuestionsData = require("./routes/questions.route");
-const checkGrammar=require('./routes/checkGrammar.route')
-const markComplete=require('./routes/markModuleComplete.route')
+const checkGrammar = require("./routes/checkGrammar.route");
+const markComplete = require("./routes/markModuleComplete.route");
+const postResults = require("./routes/postResults.route");
 const { connectDb } = require("./configs/db");
 const dotenv = require("dotenv");
 
@@ -33,8 +34,9 @@ app.use("/instructors", instructors);
 app.use("/stats", stats);
 app.use("/module", viewroute);
 app.use("/exercises", allQuestionsData);
-app.use("/check",checkGrammar)
-app.use("/complete",markComplete)
+app.use("/check", checkGrammar);
+app.use("/complete", markComplete);
+app.use("/postResults", postResults);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
