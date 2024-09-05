@@ -1,5 +1,4 @@
-
-function generateRandomRLG() {
+const generateRandomRLG = () => {
   const nonTerminals = ["S", "A", "B", "C", "D"];
   const terminals = ["a", "b", "c"];
   const grammar = {};
@@ -28,12 +27,17 @@ function generateRandomRLG() {
           // Avoid self-references in `S` and prioritize other non-terminals
           while (nonTerminal === "S" && nextNonTerminal === "S") {
             nextNonTerminal =
-              nonTerminals[Math.floor(Math.random() * (nonTerminals.length - 1)) + 1];
+              nonTerminals[
+                Math.floor(Math.random() * (nonTerminals.length - 1)) + 1
+              ];
           }
 
           production += nextNonTerminal;
 
-          if (nonTerminal === "S" && ["A", "B", "C", "D"].includes(nextNonTerminal)) {
+          if (
+            nonTerminal === "S" &&
+            ["A", "B", "C", "D"].includes(nextNonTerminal)
+          ) {
             hasRequiredNonTerminal = true;
           }
         }
@@ -44,8 +48,10 @@ function generateRandomRLG() {
 
     // Ensure at least one production for S contains A, B, C, or D
     if (nonTerminal === "S" && !hasRequiredNonTerminal) {
-      const randomTerminal = terminals[Math.floor(Math.random() * terminals.length)];
-      const randomNonTerminal = nonTerminals[Math.floor(Math.random() * (nonTerminals.length - 1)) + 1];
+      const randomTerminal =
+        terminals[Math.floor(Math.random() * terminals.length)];
+      const randomNonTerminal =
+        nonTerminals[Math.floor(Math.random() * (nonTerminals.length - 1)) + 1];
       productions.add(randomTerminal + randomNonTerminal);
     }
 
@@ -53,7 +59,6 @@ function generateRandomRLG() {
   });
 
   return grammar;
-}
-
+};
 
 module.exports = { generateRandomRLG };

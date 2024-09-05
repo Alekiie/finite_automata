@@ -15,6 +15,8 @@ const checkGrammar = require("./routes/checkGrammar.route");
 const markComplete = require("./routes/markModuleComplete.route");
 const postResults = require("./routes/postResults.route");
 const getResults = require("./routes/results.route");
+const generateGrammar = require("./routes/generateGrammar.route");
+const generatedWords = require("./routes/generateWordsFromGrammar.route");
 const { connectDb } = require("./configs/db");
 const dotenv = require("dotenv");
 
@@ -35,10 +37,12 @@ app.use("/instructors", instructors);
 app.use("/stats", stats);
 app.use("/module", viewroute);
 app.use("/exercises", allQuestionsData);
-app.use("/check", checkGrammar);
 app.use("/complete", markComplete);
 app.use("/postResults", postResults);
 app.use("/results", getResults);
+app.use("/generate", generateGrammar);
+app.use("/check", checkGrammar);
+app.use("/generateWords", generatedWords);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

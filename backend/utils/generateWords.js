@@ -3,8 +3,6 @@ const { generateRandomRLG } = require('./automata');
 function generateWordsFromGrammar(startSymbol, maxLength) {
     // Generate the grammar
     const grammar = generateRandomRLG();
-    console.log("***Generated Grammar***:\n");
-    console.log(grammar);
 
     // Helper function to check if the string contains only terminal symbols
     function isTerminal(str, grammar) {
@@ -56,7 +54,6 @@ function generateWordsFromGrammar(startSymbol, maxLength) {
     // Generate and return the words from the generated grammar
     return generateWords(grammar, 'S', maxLength);
 }
-console.log(generateWordsFromGrammar('S', 5));
 
 
 module.exports = { generateWordsFromGrammar };
