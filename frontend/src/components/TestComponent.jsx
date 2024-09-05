@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "../configs/axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 export function TestComponent() {
   const { testIndex } = useParams();
   const navigate = useNavigate();
-  const {authState} = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [test, setTest] = useState([]);
@@ -49,7 +49,6 @@ export function TestComponent() {
       setScores([...scores, 0]);
     }
 
-    // Move to next question after a delay
     setTimeout(() => {
       setUserAnswer("");
       setFeedback("");
@@ -64,20 +63,21 @@ export function TestComponent() {
 
   const handleFinalSubmit = () => {
     const totalScore = scores.reduce((acc, score) => acc + score, 0);
-    axios
-      .post("/postResults", {
-        testIndex: testIndex,
-        score: totalScore,
-      },{
-        headers:{
-            Authorization: `Bearer ${authState.user.accessToken}`
+    axios.post("/postResults",
+        {
+          testIndex: testIndex,
+          score: totalScore,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
         }
-      })
+      )
       .catch((err) => {
         setError("Failed to submit results.");
       });
 
-    // Reset and go back to the list
     navigate("/exercises");
   };
 
@@ -95,6 +95,16 @@ export function TestComponent() {
       <h1 className="text-2xl font-bold mb-6 text-center">
         Test {parseInt(testIndex) + 1}
       </h1>
+
+      <div className="mb-4 text-center">
+        <Link
+          to="/exercises"
+          className="text-gray-700 hover:text-gray-700 mb-3 py-2 px-4 bg-green-400 rounded shadow-lg"
+        >
+          Return to Exercises
+        </Link>
+      </div>
+
       <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
         <div
           className="bg-blue-500 h-4 rounded-full"

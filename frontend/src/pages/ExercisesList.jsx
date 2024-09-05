@@ -25,13 +25,15 @@ export function ExercisesList() {
 
     const getCompletedTests = async () => {
       try {
-        const response = await axios.get("/results",{
-          headers: {Authorization: `Bearer ${authState.user.accessToken}`}
+        const response = await axios.get("/results", {
+          headers: { Authorization: `Bearer ${authState.user.accessToken}` },
         });
-        const completedTestIndexes = response.data.map(
-          (result) => result.testIndex
-        );
-        setCompletedTests(completedTestIndexes); // Store the test indexes that are completed
+        // Store both testIndex and testScore
+        const completedTestsData = response.data.map((result) => ({
+          testIndex: result.testIndex,
+          testScore: result.testScore,
+        }));
+        setCompletedTests(completedTestsData); // Store completed tests with scores
       } catch (err) {
         console.error("Failed to load completed tests");
       }
@@ -57,7 +59,12 @@ export function ExercisesList() {
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {exercises.map((test, index) => {
-          const isCompleted = completedTests.includes(index); // Check if the testIndex is in completedTests array
+          // Find the corresponding completed test by testIndex
+          const completedTest = completedTests.find(
+            (completed) => completed.testIndex === index
+          );
+          const isCompleted = !!completedTest; // Check if the testIndex is in completedTests array
+          const testScore = completedTest ? completedTest.testScore : null;
 
           return (
             <div
@@ -88,7 +95,7 @@ export function ExercisesList() {
                 }`}
               >
                 {isCompleted
-                  ? "You have already completed this test."
+                  ? `You have already completed. \nScored: ${testScore * 10}%`
                   : "Click to take this test"}
               </p>
               {!isCompleted ? (
