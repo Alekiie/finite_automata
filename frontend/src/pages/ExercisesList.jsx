@@ -25,8 +25,10 @@ export function ExercisesList() {
 
     const getCompletedTests = async () => {
       try {
-        const response = await axios.get("/results");
-        setCompletedTests(response.data); // Assuming response contains an array of completed test indices
+        const response = await axios.get("/results", {
+          headers: { Authorization: `Bearer ${authState.user.accessToken}` },
+        });
+        setCompletedTests(response.data);
       } catch (err) {
         console.error("Failed to load completed tests");
       }

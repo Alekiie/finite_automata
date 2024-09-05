@@ -14,6 +14,7 @@ const allQuestionsData = require("./routes/questions.route");
 const checkGrammar = require("./routes/checkGrammar.route");
 const markComplete = require("./routes/markModuleComplete.route");
 const postResults = require("./routes/postResults.route");
+const getResults = require("./routes/results.route");
 const { connectDb } = require("./configs/db");
 const dotenv = require("dotenv");
 
@@ -37,6 +38,7 @@ app.use("/exercises", allQuestionsData);
 app.use("/check", checkGrammar);
 app.use("/complete", markComplete);
 app.use("/postResults", postResults);
+app.use("/results", getResults);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
