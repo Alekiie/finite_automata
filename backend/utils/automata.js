@@ -57,7 +57,6 @@ const generateRandomRLG = () => {
 
     grammar[nonTerminal] = Array.from(productions);
   });
-
   return grammar;
 };
 

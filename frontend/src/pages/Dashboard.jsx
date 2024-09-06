@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -12,7 +12,7 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
-import axios from '../configs/axios'
+import axios from "../configs/axios";
 import AuthContext from "../context/AuthContext";
 
 // Register components for chart.js
@@ -41,23 +41,29 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
   const [stats, setsStats] = useState("");
+  const [performanceScores, setPerformanceScores] = useState([]);
 
   const userRole = authState.user.role.toLowerCase();
 
   // Data for the Bar chart (Performance)
-  const performanceData = useMemo(
-    () => ({
-      labels: ["Module 1", "Module 2", "Module 3"],
+  const performanceData = useMemo(() => {
+    const labels = performanceScores.map(
+      (score) => `Test ${score.testIndex + 1}`
+    );
+    const data = performanceScores.map((score) => score.testScorePercentage);
+
+    return {
+      labels, // Use dynamic labels from performanceScores
       datasets: [
         {
           label: "Scores",
-          data: [85, 92, 78],
-          backgroundColor: "rgba(54, 162, 235, 0.5)",
+          data, // Use dynamic data from performanceScores
+          backgroundColor: "rgba(75, 192, 192, 0.7)",
+          fill: true,
         },
       ],
-    }),
-    []
-  );
+    };
+  }, [performanceScores]); 
 
   // Data for the Line chart (Module Progress)
   const progressData = useMemo(
@@ -91,7 +97,23 @@ export const Dashboard = () => {
       }
     };
 
+    const fetchPerformanceData = async () => {
+      try {
+        const response = await axios.get("/results", {
+          headers: {
+            Authorization: `Bearer ${authState.user.accessToken}`,
+          },
+        });
+        const scores = response.data;
+        console.log(scores);
+        setPerformanceScores(scores);
+      } catch (error) {
+        console.error("Error fetching performance data:", error);
+      }
+    };
+
     fetchStats();
+    fetchPerformanceData();
   }, []);
 
   return (
