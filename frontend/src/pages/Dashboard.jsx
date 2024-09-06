@@ -14,7 +14,9 @@ import {
 } from "chart.js";
 import axios from "../configs/axios";
 import AuthContext from "../context/AuthContext";
-import { set } from "mongoose";
+import Stats from "../components/Stats";
+import Performance from "../components/Performance";
+import DashAside from "../components/DashAside";
 
 // Register components for chart.js
 ChartJS.register(
@@ -29,17 +31,16 @@ ChartJS.register(
 );
 
 // Memoized Bar Chart
-const MemoizedBarChart = React.memo(({ data }) => (
+export const MemoizedBarChart = React.memo(({ data }) => (
   <Bar data={data} options={{ maintainAspectRatio: true }} />
 ));
 
 // Memoized Line Chart
-const MemoizedLineChart = React.memo(({ data }) => (
+export const MemoizedLineChart = React.memo(({ data }) => (
   <Line data={data} options={{ maintainAspectRatio: true }} />
 ));
 
 export const Dashboard = () => {
-  const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
   const [stats, setsStats] = useState("");
   const [performanceScores, setPerformanceScores] = useState([]);
@@ -147,222 +148,13 @@ export const Dashboard = () => {
         </h1>
       </header>
       <div className="flex flex-1">
-        <aside className="w-56 bg-white shadow-lg rounded p-6">
-          <nav>
-            <ul>
-              <li className="mb-4">
-                <a
-                  href="#stats"
-                  className="text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Stats
-                </a>
-              </li>
-              {userRole === "student" && (
-                <>
-                  <li className="mb-4">
-                    <a
-                      href="#performance"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Performance
-                    </a>
-                  </li>
-                  <li className="mb-4">
-                    <a
-                      href="#instructors"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Instructors
-                    </a>
-                  </li>
-                  <li className="mb-4">
-                    <a
-                      href="#modules"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Modules
-                    </a>
-                  </li>
-                </>
-              )}
-              {userRole === "instructor" && (
-                <>
-                  <li className="mb-4">
-                    <a
-                      href="#modules"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Manage Modules
-                    </a>
-                  </li>
-                </>
-              )}
-              {userRole === "admin" && (
-                <>
-                  <li className="mb-4">
-                    <a
-                      href="#admin"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Admin Panel
-                    </a>
-                  </li>
-                  <li className="mb-4">
-                    <a
-                      href="#userManagement"
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      User Management
-                    </a>
-                  </li>
-                </>
-              )}
-            </ul>
-          </nav>
-        </aside>
+        <DashAside userRole={userRole} />
         <main className="flex-1 p-10">
           {/* Stats Section */}
-          <section id="stats" className="mb-10">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-              Your Stats
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white p-6 shadow-md rounded-lg">
-                <h3 className="text-lg font-medium text-gray-600">
-                  Total Modules Enrolled
-                </h3>
-                <p className="text-3xl font-bold text-red-800 text-center">
-                  {stats.totalEnrolledModules}
-                </p>
-              </div>
-              <div className="bg-white p-6 shadow-md rounded-lg">
-                <h3 className="text-lg font-medium text-center text-gray-600">
-                  Total Modules Completed
-                </h3>
-                <p className="text-3xl font-bold text-center text-red-800">
-                  {stats.completedModules}
-                </p>
-              </div>
-              <div className="bg-white p-6 shadow-md rounded-lg">
-                <h3 className="text-lg font-medium text-gray-600">
-                  Active Modules
-                </h3>
-                <p className="text-3xl text-center font-bold text-red-800">
-                  {stats.activeModules}
-                </p>
-              </div>
-              <div className="bg-white p-6 shadow-md text-center rounded-lg">
-                <h3 className="text-lg font-medium text-gray-600">
-                  Excercies Completed
-                </h3>
-                <p className="text-3xl text-center font-bold text-red-800">
-                  {performanceScores.length} tests
-                </p>
-              </div>
-            </div>
-            {userRole === "student" && (
-              <div className="flex flex-col w-full mt-3">
-                <h2 className="text-2xl text-center font-semibold text-gray-700 mb-6">
-                  Your Actions
-                </h2>
-                <article className="flex items-center justify-around">
-                  <div className="flex items-center justify-center">
-                    <button
-                      onClick={() => {
-                        navigate("/learning");
-                      }}
-                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
-                    >
-                      Continue Learning
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      onClick={() => {
-                        navigate("/exercises");
-                      }}
-                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
-                    >
-                      Exercises
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      onClick={() => {
-                        navigate("/algorithms");
-                      }}
-                      className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
-                    >
-                      Algorithms
-                    </button>
-                  </div>
-                </article>
-              </div>
-            )}
-          </section>
+          <Stats stats={stats} performanceScores={performanceScores} userRole={userRole} />
 
           {userRole === "student" && (
-            <>
-              {/* Performance Section */}
-              <section id="performance" className="mb-10">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-                  Performance
-                </h2>
-                <div className="bg-white p-6 shadow-md rounded-lg">
-                  <MemoizedBarChart data={performanceData} />
-                </div>
-              </section>
-              {/* Instructors Section */}
-              <section id="instructors" className="mb-10">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-                  Instructors
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {
-                    instructors.map((instructor, index)=>(
-                      <div className="bg-white p-6 shadow-md rounded-lg" key={index}>
-                        <h3 className="text-lg font-medium text-gray-600">
-                          Dr. {instructor.firstName}&nbsp;{instructor.lastName}
-                        </h3>
-                        <p className="text-gray-700">
-                          {instructor.email}
-                        </p>
-                      </div>
-                    ))
-                  }
-                </div>
-              </section>
-              {/* Modules Section */}
-              <section id="modules" className="mb-10">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-6">
-                  Enrolled Modules
-                </h2>
-                <div className="bg-white p-6 shadow-md rounded-lg mb-6">
-                  <h3 className="text-lg font-medium text-gray-600 mb-4">
-                    Progress
-                  </h3>
-                  <MemoizedLineChart data={progressData} />
-                </div>
-                <div className="w-full flex flex-col md:grid-cols-2 gap-6">
-                  {
-                    modules.map((module, index)=>(
-                      <div className="bg-white p-6 shadow-md rounded-lg" key={index}>
-                        <h3 className="text-lg font-medium text-gray-600">
-                          Module {index + 1}: {module.content.title}
-                        </h3>
-                        <p className="text-gray-700">
-                          Type: {module.content.type}
-                        </p>
-                        <p className="text-gray-700">
-                          Content: {module.description.split('').slice(0, 30)}...
-                        </p>
-                      </div>
-                    ))
-                  }
-                </div>
-              </section>
-            </>
+            <Performance progressData={progressData} performanceData={performanceData} instructors={instructors} modules={modules} error={error} />
           )}
           {userRole === "instructor" && (
             <>
