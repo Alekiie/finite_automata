@@ -21,14 +21,40 @@ const createModule = async (req, res) => {
                 return res.status(400).json({ message: 'File upload failed', error: err.message });
             }
 
-            const { title, description, contentType, contentTitle, automataReferences, enrolledUsers } = req.body;
+            const { title, description, contentType, contentTitle, contentText, automataReferences, enrolledUsers } = req.body;
 
-            // Create the content object
+            // Initialize content object based on the content type
             let content = {
-                type: contentType, // e.g., 'text', 'video', 'quiz', etc.
+                type: contentType, // 'text', 'video', 'quiz', 'pdf', 'exercise'
                 title: contentTitle,
-                data: req.file ? req.file.buffer : null, // Save the file buffer if it exists
+                data: null // Initialize data
             };
+
+            // Handle content based on contentType
+            switch (contentType) {
+                case 'text':
+                    // For text content, use `contentText` from the body
+                    content.data = contentText;
+                    break;
+                case 'video':
+                    // For videos, expect a video URL or buffer file (e.g., video upload)
+                    content.data = req.file ? req.file.buffer : null; // Buffer if file exists
+                    break;
+                case 'pdf':
+                    // For PDFs, expect a file upload
+                    content.data = req.file ? req.file.buffer : null; // Buffer if file exists
+                    break;
+                case 'quiz':
+                    // For quizzes, expect the quiz questions as JSON
+                    content.data = JSON.parse(req.body.quizData); // Quiz data sent as a JSON string
+                    break;
+                case 'exercise':
+                    // For exercises, expect exercise details
+                    content.data = JSON.parse(req.body.exerciseData); // Exercise data sent as a JSON string
+                    break;
+                default:
+                    return res.status(400).json({ message: 'Invalid content type' });
+            }
 
             // Create a new module instance
             const module = new ModuleModel({

@@ -101,9 +101,33 @@ const ModuleContent = () => {
     }
   };
 
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  const renderTextContent = (content) => {
+    // Split the content into sections based on new lines
+    const sections = content.split("\n\n");
+
+    return (
+      <div className="text-content">
+        {sections.map((section, index) => {
+          const [heading, ...rest] = section.split("\n");
+          const body = rest.join("\n");
+
+          return (
+            <div key={index} className="mb-6">
+              {heading.startsWith("1.") || heading.startsWith("2.") ? (
+                <h2 className="text-xl font-semibold mb-2">{heading}</h2>
+              ) : (
+                <h3 className="text-lg font-semibold mb-2">{heading}</h3>
+              )}
+              <p>{body}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -135,11 +159,52 @@ const ModuleContent = () => {
             <Viewer fileUrl={fileUrl} />
           </Worker>
         </div>
+      ) : module?.content.type === "text" ? (
+        renderTextContent(module?.content.data)
+      ) : module?.content.type === "video" ? (
+        <div className="video-content">
+          <h2 className="text-xl font-semibold mb-4">
+            {module?.content.title}
+          </h2>
+          <video controls width="100%">
+            <source src={module?.content.data} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      ) : module?.content.type === "quiz" ? (
+        <div className="quiz-content">
+          <h2 className="text-xl font-semibold mb-4">
+            {module?.content.title}
+          </h2>
+          <div>
+            {/* Assuming `module?.content.data` contains the quiz questions and options */}
+            {module?.content.data.map((question, index) => (
+              <div key={index} className="quiz-question mb-4">
+                <p className="font-semibold">{question.question}</p>
+                <ul>
+                  {question.options.map((option, i) => (
+                    <li key={i} className="mb-2">
+                      {option}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : module?.content.type === "exercise" ? (
+        <div className="exercise-content">
+          <h2 className="text-xl font-semibold mb-4">
+            {module?.content.title}
+          </h2>
+          <p>{module?.content.data}</p>
+        </div>
       ) : (
         <div className="content">
           {module?.content.title || "No content available"}
         </div>
       )}
+
       <div className="w-full flex justify-end p-3">
         <button
           onClick={completeModule}

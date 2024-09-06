@@ -25,7 +25,9 @@ export function NewModule() {
         (formData.resourceType === "video" && file.type.startsWith("video/"));
 
       if (!isValidFile) {
-        alert(`Please upload a valid ${formData.resourceType.toUpperCase()} file.`);
+        alert(
+          `Please upload a valid ${formData.resourceType.toUpperCase()} file.`
+        );
         return;
       }
 
@@ -57,20 +59,32 @@ export function NewModule() {
     formDataToSend.append("description", formData.description);
     formDataToSend.append("contentTitle", formData.content_title);
     formDataToSend.append("contentType", formData.resourceType);
-    if (formData.resource) {
-      formDataToSend.append("contentFile", formData.resource); // Changed key to "contentFile"
+
+    // Handling different content types
+    if (formData.resourceType === "pdf" || formData.resourceType === "video") {
+      if (formData.resource) {
+        formDataToSend.append("contentFile", formData.resource); // For PDF or video files
+      }
+    } else if (formData.resourceType === "text") {
+      formDataToSend.append("contentText", formData.resource); // Text content
+    } else if (formData.resourceType === "quiz") {
+      try {
+        const quizData = JSON.parse(formData.resource); // Parse quiz questions from input
+        formDataToSend.append("quizData", JSON.stringify(quizData)); // Convert to JSON string for backend
+      } catch (error) {
+        console.error("Error parsing quiz data:", error);
+        alert("Invalid JSON format for quiz.");
+        return;
+      }
     }
 
     try {
-      const response = await axios.post("/modules",
-        formDataToSend,
-        {
-          headers: {
-            Authorization: `Bearer ${authState.user.accessToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("/modules", formDataToSend, {
+        headers: {
+          Authorization: `Bearer ${authState.user.accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201) {
         setFormData({
@@ -81,8 +95,7 @@ export function NewModule() {
           resource: null,
         });
 
-        navigate('/modules');
-
+        navigate("/modules");
       } else {
         console.error("Error creating module:", response.data.message);
       }
@@ -93,10 +106,14 @@ export function NewModule() {
 
   return (
     <div className="container w-2/3 mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Create New Module</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+        Create New Module
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Title</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Title
+          </label>
           <input
             type="text"
             name="title"
@@ -107,7 +124,9 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Description
+          </label>
           <textarea
             name="description"
             value={formData.description}
@@ -117,7 +136,9 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Content Title</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Content Title
+          </label>
           <input
             type="text"
             name="content_title"
@@ -128,7 +149,9 @@ export function NewModule() {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Resource Type</label>
+          <label className="block text-sm font-medium text-gray-700">
+            Resource Type
+          </label>
           <select
             name="resourceType"
             value={formData.resourceType}
@@ -138,12 +161,15 @@ export function NewModule() {
             <option value="pdf">PDF</option>
             <option value="video">Video</option>
             <option value="text">Text</option>
-            <option value="quiz">Quiz</option> {/* Changed "test" to "quiz" */}
+            <option value="quiz">Quiz</option>
           </select>
         </div>
+
         {formData.resourceType === "pdf" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Upload PDF</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload PDF
+            </label>
             <input
               type="file"
               name="resource"
@@ -152,9 +178,12 @@ export function NewModule() {
             />
           </div>
         )}
+
         {formData.resourceType === "video" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Video Link</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Video Link
+            </label>
             <input
               type="text"
               name="resource"
@@ -164,9 +193,12 @@ export function NewModule() {
             />
           </div>
         )}
+
         {formData.resourceType === "text" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Text Content</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Text Content
+            </label>
             <textarea
               name="resource"
               value={formData.resource || ""}
@@ -175,17 +207,22 @@ export function NewModule() {
             />
           </div>
         )}
+
         {formData.resourceType === "quiz" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700">Quiz Questions</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Quiz Questions (JSON)
+            </label>
             <textarea
               name="resource"
               value={formData.resource || ""}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder='[{ "question": "...", "options": ["..."], "answer": ["..."], "reason": "..." }]'
             />
           </div>
         )}
+
         <div>
           <button
             type="submit"
