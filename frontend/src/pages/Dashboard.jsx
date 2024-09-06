@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import axios from "../configs/axios";
 import AuthContext from "../context/AuthContext";
+import { set } from "mongoose";
 
 // Register components for chart.js
 ChartJS.register(
@@ -43,13 +44,15 @@ export const Dashboard = () => {
   const [stats, setsStats] = useState("");
   const [performanceScores, setPerformanceScores] = useState([]);
 
+  const [modules, setModules] = useState([]);
+  const [instructors, setInstructors] = useState([]);
+  const [error, setError] = useState('');
+
   const userRole = authState.user.role.toLowerCase();
 
   // Data for the Bar chart (Performance)
   const performanceData = useMemo(() => {
-    const labels = performanceScores.map(
-      (score) => `Test ${score.testIndex + 1}`
-    );
+    const labels = performanceScores.map((score) => `Test ${score.testIndex + 1}`);
     const data = performanceScores.map((score) => score.testScorePercentage);
 
     return {
@@ -66,21 +69,18 @@ export const Dashboard = () => {
   }, [performanceScores]); 
 
   // Data for the Line chart (Module Progress)
-  const progressData = useMemo(
-    () => ({
-      labels: ["Module 1", "Module 2", "Module 3", "Module 4"],
-      datasets: [
-        {
-          label: "Completion (%)",
-          data: [25, 50, 75, 100],
-          borderColor: "rgba(75, 192, 192, 1)",
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          fill: true,
-        },
-      ],
-    }),
-    []
-  );
+  const progressData = useMemo(() => ({
+    labels: performanceScores.map((score) => `Test ${score.testIndex + 1}`),
+    datasets: [
+      {
+        label: "Completion (%)",
+        data: performanceScores.map((score) => score.testScorePercentage),
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        fill: true,
+      },
+    ],
+  }),[performanceScores]);
 
   // Fetch stats from the backend
   useEffect(() => {
@@ -105,15 +105,38 @@ export const Dashboard = () => {
           },
         });
         const scores = response.data;
-        console.log(scores);
         setPerformanceScores(scores);
       } catch (error) {
         console.error("Error fetching performance data:", error);
       }
     };
 
+    const fetchEnrolledModules = async () => {
+      try {
+        const response = await axios.get('/enrolled',{headers:{Authorization: `Bearer ${authState.user.accessToken}`}});
+        setModules(response.data);
+      } catch (error) {
+        console.error(`Error fetching enrolled modules ${error.message}`);
+        setError(error.message);
+      }
+    }
+
+    const fetchAllInstructors = async () => {
+      try {
+        const response = await axios.get('/instructors');
+
+        const result = response.data.instructors;
+        setInstructors(result);
+      } catch (error) {
+        console.error("Error fetching instructors:", error);
+        setError(error.message);
+      }
+    }
+
     fetchStats();
     fetchPerformanceData();
+    fetchEnrolledModules();
+    fetchAllInstructors();
   }, []);
 
   return (
@@ -231,10 +254,10 @@ export const Dashboard = () => {
               </div>
               <div className="bg-white p-6 shadow-md text-center rounded-lg">
                 <h3 className="text-lg font-medium text-gray-600">
-                  Total Time Spent
+                  Excercies Completed
                 </h3>
                 <p className="text-3xl text-center font-bold text-red-800">
-                  {stats.totalTimeSpent} hrs
+                  {performanceScores.length} tests
                 </p>
               </div>
             </div>
@@ -296,22 +319,18 @@ export const Dashboard = () => {
                   Instructors
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white p-6 shadow-md rounded-lg">
-                    <h3 className="text-lg font-medium text-gray-600">
-                      Dr. John Doe
-                    </h3>
-                    <p className="text-gray-700">
-                      Expert in Finite Automata and Regular Languages.
-                    </p>
-                  </div>
-                  <div className="bg-white p-6 shadow-md rounded-lg">
-                    <h3 className="text-lg font-medium text-gray-600">
-                      Prof. Jane Smith
-                    </h3>
-                    <p className="text-gray-700">
-                      Specializes in Theoretical Computer Science.
-                    </p>
-                  </div>
+                  {
+                    instructors.map((instructor, index)=>(
+                      <div className="bg-white p-6 shadow-md rounded-lg" key={index}>
+                        <h3 className="text-lg font-medium text-gray-600">
+                          Dr. {instructor.firstName}&nbsp;{instructor.lastName}
+                        </h3>
+                        <p className="text-gray-700">
+                          {instructor.email}
+                        </p>
+                      </div>
+                    ))
+                  }
                 </div>
               </section>
               {/* Modules Section */}
@@ -325,23 +344,22 @@ export const Dashboard = () => {
                   </h3>
                   <MemoizedLineChart data={progressData} />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white p-6 shadow-md rounded-lg">
-                    <h3 className="text-lg font-medium text-gray-600">
-                      Module 1: Introduction to Finite Automata
-                    </h3>
-                    <p className="text-gray-700">
-                      Understanding the basics of finite automata.
-                    </p>
-                  </div>
-                  <div className="bg-white p-6 shadow-md rounded-lg">
-                    <h3 className="text-lg font-medium text-gray-600">
-                      Module 2: Regular Languages
-                    </h3>
-                    <p className="text-gray-700">
-                      Deep dive into regular languages and their properties.
-                    </p>
-                  </div>
+                <div className="w-full flex flex-col md:grid-cols-2 gap-6">
+                  {
+                    modules.map((module, index)=>(
+                      <div className="bg-white p-6 shadow-md rounded-lg" key={index}>
+                        <h3 className="text-lg font-medium text-gray-600">
+                          Module {index + 1}: {module.content.title}
+                        </h3>
+                        <p className="text-gray-700">
+                          Type: {module.content.type}
+                        </p>
+                        <p className="text-gray-700">
+                          Content: {module.description.split('').slice(0, 30)}...
+                        </p>
+                      </div>
+                    ))
+                  }
                 </div>
               </section>
             </>
