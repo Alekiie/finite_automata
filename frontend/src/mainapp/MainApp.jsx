@@ -20,6 +20,7 @@ import Navbar from '../components/NavBar';
 import Sidebar from '../components/Sidebar';
 import ModuleContent from '../components/ModuleContent';
 import { TestComponent } from '../components/TestComponent';
+import PlayGround from '../components/PlayGround';
 
 
 
@@ -50,6 +51,8 @@ function MainApp() {
                 <Route path="/new_module" element={authState.isAuthenticated ? <NewModule /> : <Navigate to="/login" />} />
                 <Route path="/module/:id" element={authState.isAuthenticated ? <ModuleContent/> : <Navigate to="/login" />} />
                 <Route path="/instructors" element={authState.isAuthenticated ? <Instructors /> : <Navigate to="/login" />} />
+                <Route path="/playground" element={authState.isAuthenticated ? <PlayGround /> : <Navigate to="/login" />} />
+
             </Routes>
         </div>
     );

@@ -74,6 +74,16 @@ export default function Stats({ stats, performanceScores, userRole }) {
                 Algorithms
               </button>
             </div>
+            <div className="flex items-center justify-center">
+              <button
+                onClick={() => {
+                  navigate("/algorithms");
+                }}
+                className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
+              >
+                Playground
+              </button>
+            </div>
           </article>
         </div>
       )}

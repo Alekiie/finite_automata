@@ -25,9 +25,9 @@ const ModuleContent = () => {
 
   useEffect(() => {
     const fetchModuleContent = async () => {
-      setLoading(true); // Start loading
-      setError(null); // Clear previous errors
-      setFileUrl(""); // Reset the PDF URL
+      setLoading(true);
+      setError(null);
+      setFileUrl("");
 
       try {
         const response = await axios.get(`/module/${id}`, {
@@ -59,7 +59,7 @@ const ModuleContent = () => {
         console.error("Error fetching or processing module content:", error);
         setError("Error loading module content. Please try again later.");
       } finally {
-        setLoading(false); // End loading
+        setLoading(false);
       }
     };
 
@@ -87,10 +87,7 @@ const ModuleContent = () => {
         }
       );
 
-      // Display the success message
       alert(response.data.message);
-
-      // Navigate back to the learning page
       navigate("/learning");
     } catch (error) {
       console.error(
@@ -105,25 +102,35 @@ const ModuleContent = () => {
   if (error) return <div>Error: {error}</div>;
 
   const renderTextContent = (content) => {
-    // Split the content into sections based on new lines
-    const sections = content.split("\n\n");
+    // Split based on the numbered headings like "1.", "2." and so on
+    const sections = content.split(/(\d+\.\s)/).filter(Boolean);
 
     return (
       <div className="text-content">
         {sections.map((section, index) => {
-          const [heading, ...rest] = section.split("\n");
-          const body = rest.join("\n");
+          // Check if the section starts with a number and period
+          const isNumberedHeading = /^\d+\.\s/.test(section);
 
-          return (
-            <div key={index} className="mb-6">
-              {heading.startsWith("1.") || heading.startsWith("2.") ? (
-                <h2 className="text-xl font-semibold mb-2">{heading}</h2>
-              ) : (
-                <h3 className="text-lg font-semibold mb-2">{heading}</h3>
-              )}
-              <p>{body}</p>
-            </div>
-          );
+          // If it's a numbered heading, make it bold
+          if (isNumberedHeading) {
+            const nextSection = sections[index + 1] || "";
+            // Extract the first sentence from the next section
+            const firstSentenceEnd = nextSection.search(/[.?:]/) + 1;
+            const firstSentence = nextSection.slice(0, firstSentenceEnd).trim();
+            const remainingText = nextSection.slice(firstSentenceEnd).trim();
+
+            return (
+              <div key={index}>
+                <h2 className="text-lg text-blue-600 font-bold mb-4">
+                  {section.trim()} {firstSentence}
+                </h2>
+                {remainingText && <p className="mb-4">{remainingText}</p>}
+              </div>
+            );
+          } else {
+            // Render the rest as a paragraph
+            return null; // We handle the section rendering above
+          }
         })}
       </div>
     );
@@ -149,7 +156,7 @@ const ModuleContent = () => {
       </div>
 
       <h1 className="text-3xl font-semibold mb-6">{module?.title}</h1>
-      <p className="text-lg mb-4">{module?.description}</p>
+      <p className="text-lg mb-4 text-slate-500">{module?.description}</p>
 
       {module?.content.type === "pdf" && fileUrl ? (
         <div className="pdf-viewer" style={{ height: "750px" }}>
@@ -177,7 +184,6 @@ const ModuleContent = () => {
             {module?.content.title}
           </h2>
           <div>
-            {/* Assuming `module?.content.data` contains the quiz questions and options */}
             {module?.content.data.map((question, index) => (
               <div key={index} className="quiz-question mb-4">
                 <p className="font-semibold">{question.question}</p>
