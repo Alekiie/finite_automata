@@ -16,6 +16,7 @@ const markComplete = require("./routes/markModuleComplete.route");
 const postResults = require("./routes/postResults.route");
 const getResults = require("./routes/results.route");
 const generateGrammar = require("./routes/generateGrammar.route");
+const playGround =require('./routes/playground.route')
 const generatedWords = require("./routes/generateWordsFromGrammar.route");
 const { connectDb } = require("./configs/db");
 const dotenv = require("dotenv");
@@ -43,6 +44,7 @@ app.use("/results", getResults);
 app.use("/generate", generateGrammar);
 app.use("/check", checkGrammar);
 app.use("/generateWords", generatedWords);
+app.use("/playground", playGround);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
