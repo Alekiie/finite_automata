@@ -13,32 +13,36 @@ const PlayGround = () => {
 
     try {
       const response = await axios.post("/playground", {
-        grammarInput: PlayGround, // Use the PlayGround state value as grammarInput
+        grammarInput: PlayGround, // Send the grammar input to the backend
       });
-      const { nodes, edges } = response.data;
+      const { nodes = [], edges = [] } = response.data; // Ensure default empty array in case of undefined
 
-      // Update the nodes and edges in state to render the automaton
+      // Safely update the nodes and edges in state
       setNodes(
-        nodes.map((node) => ({
-          id: node.id,
-          data: { label: node.label },
-          position: node.position,
-          style: {
-            backgroundColor: node.id === 'START' ? 'lightblue' : node.id === 'END' ? 'lightcoral' : 'lightgreen',
-            borderRadius: '50%',
-            padding: '10px',
-          },
-        }))
+        nodes
+          .filter((node) => node && node.id) // Filter out any undefined or invalid nodes
+          .map((node) => ({
+            id: node.id,
+            data: { label: node.label },
+            position: node.position,
+            style: {
+              backgroundColor: node.id === 'START' ? 'lightblue' : node.id.includes('END') ? 'lightcoral' : 'lightgreen',
+              borderRadius: '50%',
+              padding: '10px',
+            },
+          }))
       );
       setEdges(
-        edges.map((edge) => ({
-          id: edge.id,
-          source: edge.source,
-          target: edge.target,
-          label: edge.label,
-          markerEnd: { type: MarkerType.ArrowClosed },
-          animated: true,
-        }))
+        edges
+          .filter((edge) => edge && edge.id) // Filter out any undefined or invalid edges
+          .map((edge) => ({
+            id: edge.id,
+            source: edge.source,
+            target: edge.target,
+            label: edge.label,
+            markerEnd: { type: MarkerType.ArrowClosed },
+            animated: true,
+          }))
       );
     } catch (error) {
       console.error("Error processing grammar:", error);
@@ -54,7 +58,7 @@ const PlayGround = () => {
         <textarea
           value={PlayGround}
           onChange={(e) => setPlayGround(e.target.value)}
-          placeholder="Enter your finite grammar (e.g., S -> aA, A -> bB)"
+          placeholder="Enter your finite automaton transition rules (e.g., S -> aA, A -> bB)"
           rows="5"
           cols="50"
           style={{ padding: "10px", border: "1px solid #ccc" }}
@@ -71,7 +75,7 @@ const PlayGround = () => {
 
       {/* Automaton Visualization */}
       {nodes.length > 0 && (
-        <div  className="w-full h-full">
+        <div className="w-full h-full">
           <h2>Automaton Visualization</h2>
           <ReactFlow nodes={nodes} edges={edges} >
             <Background color="#aaa" gap={30} />
