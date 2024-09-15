@@ -1,11 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export default function Stats({ stats, performanceScores, userRole }) {
+export default function Stats({ stats, performanceScores, user }) {
     const navigate = useNavigate();
   return (
     <section id="stats" className="mb-10">
-      <h2 className="text-2xl font-semibold text-gray-700 mb-6">Your Stats</h2>
+      <h2 className="text-2xl font-semibold text-gray-700 mb-6">{user.firstName}'s Stats</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 shadow-md rounded-lg">
           <h3 className="text-lg font-medium text-gray-600">
@@ -34,11 +34,11 @@ export default function Stats({ stats, performanceScores, userRole }) {
             Excercies Completed
           </h3>
           <p className="text-3xl text-center font-bold text-red-800">
-            {performanceScores.length} tests
+            {performanceScores.length > 1 ? `${performanceScores.length} tests`: `${performanceScores.length} test`}
           </p>
         </div>
       </div>
-      {userRole === "student" && (
+      {user.role.toLowerCase() === "student" && (
         <div className="flex flex-col w-full mt-3">
           <h2 className="text-2xl text-center font-semibold text-gray-700 mb-6">
             Your Actions

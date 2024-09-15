@@ -29,8 +29,8 @@ export const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/register', formData).data;
-            response ? setSuccess('Registration successful!') : setSuccess('Registration Request Failed');
+            const response = await axios.post('/register', formData);
+            response ? setSuccess(`${response.data.message}`) : setSuccess(`${response.data.message}`);
             setError('');
 
             setTimeout(()=>{
@@ -145,7 +145,7 @@ export const Signup = () => {
               />
             </div>
 
-            <div className="md:col-span-1">
+            <div className="md:col-span-2">
               <label
                 htmlFor="role"
                 className="block mb-1 text-sm text-gray-600 dark:text-gray-200"
@@ -163,21 +163,6 @@ export const Signup = () => {
                 <option value="Admin">Admin</option>
                 <option value="Instructor">Instructor</option>
               </select>
-            </div>
-
-            <div>
-              <label
-                htmlFor="profilePic"
-                className="block mb-1 text-sm text-gray-600 dark:text-gray-200"
-              >
-                Profile Picture
-              </label>
-              <input
-                id="profilePic"
-                type="file"
-                placeholder="Enter your password"
-                className="block w-full px-2 py-1 mt-1 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400"
-              />
             </div>
 
             <button

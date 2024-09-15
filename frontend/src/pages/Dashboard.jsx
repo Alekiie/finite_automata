@@ -151,7 +151,7 @@ export const Dashboard = () => {
         <DashAside userRole={userRole} />
         <main className="flex-1 p-10">
           {/* Stats Section */}
-          <Stats stats={stats} performanceScores={performanceScores} userRole={userRole} />
+          <Stats stats={stats} performanceScores={performanceScores} user={authState.user} />
 
           {userRole === "student" && (
             <Performance progressData={progressData} performanceData={performanceData} instructors={instructors} modules={modules} error={error} />
