@@ -46,11 +46,11 @@ const PlayGround = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-      <h1>Finite Automata Visualizer</h1>
+    <div className="flex flex-col items-center gap-3">
+      <h1 className="text-2xl">Finite Automata Visualizer</h1>
 
       {/* Grammar Input Form */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+      <form onSubmit={handleSubmit} className="flex flex-col">
         <textarea
           value={PlayGround}
           onChange={(e) => setPlayGround(e.target.value)}
@@ -63,7 +63,7 @@ const PlayGround = () => {
         <button
           type="submit"
           style={{ marginTop: "10px", padding: "8px 16px" }}
-          className="bg-green-300 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-400 transition-all ease-in-out cursor-pointer"
+          className="bg-green-500 px-4 py-2 shadow-md text-center rounded-lg hover:bg-green-700 transition-all ease-in-out cursor-pointer"
         >
           Submit Grammar
         </button>
