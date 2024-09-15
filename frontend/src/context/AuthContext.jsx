@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     user: null,
+    loading: true, // Add a loading state
   });
 
   useEffect(() => {
@@ -16,11 +17,25 @@ export const AuthProvider = ({ children }) => {
       const parsedUser = JSON.parse(storedUser);
 
       if (parsedUser.accessToken) {
+        // Set the auth state if token exists
         setAuthState({
           isAuthenticated: true,
           user: parsedUser,
+          loading: false, // Set loading to false after auth check
+        });
+      } else {
+        setAuthState({
+          isAuthenticated: false,
+          user: null,
+          loading: false, // Set loading to false
         });
       }
+    } else {
+      setAuthState({
+        isAuthenticated: false,
+        user: null,
+        loading: false, // Set loading to false
+      });
     }
   }, []);
 
@@ -37,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       setAuthState({
         isAuthenticated: true,
         user: userData,
+        loading: false, // Set loading to false after successful login
       });
 
       return { success: true, message: response.data.message };
@@ -54,6 +70,7 @@ export const AuthProvider = ({ children }) => {
     setAuthState({
       isAuthenticated: false,
       user: null,
+      loading: false, // Set loading to false after logout
     });
   };
 
