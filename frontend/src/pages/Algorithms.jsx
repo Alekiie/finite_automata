@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "../configs/axios";
 
+// import reload icons
+import { RxReload } from "react-icons/rx";
+
 export const Algorithms = () => {
   const [grammar, setGrammar] = useState({});
   const [userWords, setUserWords] = useState([""]);
@@ -10,8 +13,7 @@ export const Algorithms = () => {
 
   // Fetch grammar on component load
   useEffect(() => {
-    axios
-      .get("/generate")
+    axios.get("/generate")
       .then((response) => {
         setGrammar(response.data);
       })
@@ -67,8 +69,8 @@ export const Algorithms = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">Algorithms</h1>
+    <div className="container w-1/3 mx-auto p-4">
+      <h1 className="text-xl text-center font-bold mb-4">Algorithms</h1>
 
       <p className="mb-4">
         Write the words that can be generated from the below grammar:
@@ -83,6 +85,11 @@ export const Algorithms = () => {
           </div>
         ))}
       </div>
+
+      <button onClick={()=>{window.location.reload()}} className="flex items-center gap-2 bg-emerald-500 text-white p-2 ml-2 mb-3 rounded shadow-lg">
+        <RxReload />
+        <span>reload grammar</span>
+      </button>
 
       <div className="mb-4">
         {userWords.map((word, index) => (
