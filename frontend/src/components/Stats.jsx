@@ -9,7 +9,7 @@ export default function Stats({ stats, performanceScores, user }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 shadow-md rounded-lg">
           <h3 className="text-lg font-medium text-gray-600">
-            Total Modules Enrolled
+            {user.role.toLowerCase() === 'student'? "Total Modules Enrolled" : "Total Modules Uploaded"}
           </h3>
           <p className="text-3xl font-bold text-red-800 text-center">
             {stats.totalEnrolledModules}
@@ -17,7 +17,7 @@ export default function Stats({ stats, performanceScores, user }) {
         </div>
         <div className="bg-white p-6 shadow-md rounded-lg">
           <h3 className="text-lg font-medium text-center text-gray-600">
-            Total Modules Completed
+            {user.role.toLowerCase() === 'student'? "Total Modules Completed" : ""}
           </h3>
           <p className="text-3xl font-bold text-center text-red-800">
             {stats.completedModules}
@@ -31,7 +31,7 @@ export default function Stats({ stats, performanceScores, user }) {
         </div>
         <div className="bg-white p-6 shadow-md text-center rounded-lg">
           <h3 className="text-lg font-medium text-gray-600">
-            Excercies Completed
+            {user.role.toLowerCase() === 'student'? "Exercises Completed" : "Total Tests Uploaded"}
           </h3>
           <p className="text-3xl text-center font-bold text-red-800">
             {performanceScores.length > 1 ? `${performanceScores.length} tests`: `${performanceScores.length} test`}
