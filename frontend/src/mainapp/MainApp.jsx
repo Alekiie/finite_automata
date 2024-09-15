@@ -31,7 +31,7 @@ function MainApp() {
 
     // If the authentication state is still loading, render a loading spinner or screen
     if (authState.loading) {
-        return <div>Loading...</div>; // You can replace this with a spinner
+        return <div>Loading...</div>;
     }
 
     return (

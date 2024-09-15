@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     isAuthenticated: false,
     user: null,
-    loading: true, // Add a loading state
+    loading: true,
   });
 
   useEffect(() => {
@@ -21,20 +21,20 @@ export const AuthProvider = ({ children }) => {
         setAuthState({
           isAuthenticated: true,
           user: parsedUser,
-          loading: false, // Set loading to false after auth check
+          loading: false,
         });
       } else {
         setAuthState({
           isAuthenticated: false,
           user: null,
-          loading: false, // Set loading to false
+          loading: false,
         });
       }
     } else {
       setAuthState({
         isAuthenticated: false,
         user: null,
-        loading: false, // Set loading to false
+        loading: false,
       });
     }
   }, []);
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       setAuthState({
         isAuthenticated: true,
         user: userData,
-        loading: false, // Set loading to false after successful login
+        loading: false,
       });
 
       return { success: true, message: response.data.message };
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     setAuthState({
       isAuthenticated: false,
       user: null,
-      loading: false, // Set loading to false after logout
+      loading: false,
     });
   };
 
