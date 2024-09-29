@@ -18,9 +18,6 @@ The project is divided into two main components: the frontend and the backend, a
 ## 3.0 Running the application
 ### Steps
 #### 1. Clone the repository
-```terminal
-git clone [repo_url]
-```
 #### 2. Navigate to the cloned directory
 Open the repository using command prompt (for Windows) or terminal (for Linux or Mac based systems)
 ```terminal
