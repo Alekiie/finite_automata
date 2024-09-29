@@ -5,6 +5,3 @@ coverage
 .env
 backend/uploads
 
-*.png
-*.jpg
-*.jpeg
