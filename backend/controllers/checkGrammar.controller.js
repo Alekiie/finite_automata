@@ -10,7 +10,8 @@ const checkWordsController = (req, res) => {
         .json({ message: "Invalid input: 'words' must be an array." });
     }
 
-    // const grammar = generateRandomRLG(); // Generate the grammar
+    // const grammar = generateRandomRLG();
+     // Generate the grammar
     const results = userWords.map((word) => {
       const isAccepted = checkWord(word, "S", grammar);
       return {
